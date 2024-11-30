@@ -1,6 +1,7 @@
 package view;
 
 
+import controller.UserController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -82,7 +83,7 @@ public class RegisterView extends Application{
 
 	    private ComboBox<String> createComboBox(String prompt) {
 	        ComboBox<String> comboBox = new ComboBox<>();
-	        comboBox.getItems().addAll("Seller", "Buyer");
+	        comboBox.getItems().addAll("Admin", "Event Organizer","Guest","Vendor");
 	        comboBox.setPromptText(prompt);
 	        return comboBox;
 	    }
@@ -105,8 +106,10 @@ public class RegisterView extends Application{
 	            if (username.isEmpty() || password.isEmpty() || email.isEmpty() || role == null) {
 	                errorLabel.setText("All fields are required.");
 	            } else {
-	              
-
+	            	UserController uc = new UserController();
+	            	
+	            	uc.register(email, username, password, role);
+	            	
 	                new LoginView().show(primaryStage);
 	            }
 	        });
