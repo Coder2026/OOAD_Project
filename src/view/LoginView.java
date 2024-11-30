@@ -48,7 +48,7 @@ public class LoginView extends Application{
 	        Button loginButton = createLoginButton(emailField, passwordField, errorLabel);
 	        Button registerButton = createRegisterButton(primaryStage);
 
-	        addGridRow(grid, 2, loginButton, registerButton);
+	        addGridRow(grid, 2, registerButton, loginButton);
 	        grid.add(errorLabel, 1, 3);
 
 	     
@@ -98,6 +98,8 @@ public class LoginView extends Application{
 	            	User user = uc.login(email, password);
 	            	if(user == null) {
 	            		errorLabel.setText("please enter correct email or password");
+	            	}else {
+	            		
 	            	}
 	            }
 	        });

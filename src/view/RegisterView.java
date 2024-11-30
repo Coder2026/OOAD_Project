@@ -52,7 +52,7 @@ public class RegisterView extends Application{
 	        Button registerButton = createRegisterButton(usernameField, passwordField, emailField, roleComboBox, errorLabel, primaryStage);
 	        Button loginButton = createLoginButton(primaryStage);
 
-	        addGridRow(grid, 4, registerButton, loginButton);
+	        addGridRow(grid, 4, loginButton, registerButton);
 	        grid.add(errorLabel, 1, 5);
 
 	        VBox vbox = new VBox(grid);
