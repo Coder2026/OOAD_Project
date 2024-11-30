@@ -92,7 +92,9 @@ public class LoginView extends Application{
 	            if (email.isEmpty() || password.isEmpty()) {
 	                errorLabel.setText("Please enter both email and password.");
 	            } else {
-	             
+	            	UserController uc = new UserController();
+	            	uc.login(email, password);
+	            	
 	            }
 	        });
 	        return loginButton;
