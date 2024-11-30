@@ -13,8 +13,8 @@ public class UserController {
         userRepository = new UserRepository();
     }
 
-    public boolean register(String userId, String userEmail, String userName, String userPassword, String userRole) {
-        User user = new User(userId, userEmail, userName, userPassword, userRole);
+    public boolean register( String userEmail, String userName, String userPassword, String userRole) {
+        User user = new User(userEmail, userName, userPassword, userRole);
         return userRepository.createUser(user);
     }
     
@@ -38,8 +38,8 @@ public class UserController {
     }
 
     // Update user
-    public boolean updateUser(String userId, String userEmail, String userName, String userPassword, String userRole) {
-        User user = new User(userId, userEmail, userName, userPassword, userRole);
+    public boolean updateUser(String userEmail, String userName, String userPassword, String userRole) {
+        User user = new User(userEmail, userName, userPassword, userRole);
         return userRepository.updateUser(user);
     }
 

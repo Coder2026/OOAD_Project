@@ -19,9 +19,10 @@ public class UserRepository {
     // Create a new user
     public boolean createUser(User user) {
         String query = String.format(
-            "INSERT INTO User (user_id, email, name, password, role) VALUES ('%s', '%s', '%s', '%s', '%s')",
-            user.getUser_id(), user.getUser_email(), user.getUser_name(), user.getUser_password(), user.getUser_role()
+            "INSERT INTO User (email, name, password, role) VALUES ('%s', '%s', '%s', '%s')",
+            user.getUser_email(), user.getUser_name(), user.getUser_password(), user.getUser_role()
         );
+        System.out.println(query);
         try {
             db.executeUpdate(query);
             return true;
