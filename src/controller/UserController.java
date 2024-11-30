@@ -22,7 +22,8 @@ public class UserController {
         List<User> users = userRepository.findAll();
         for (User user : users) {
             if (user.getUser_email().equals(email) && user.getUser_password().equals(password)) {
-                return user;
+            	System.out.println("berhasil");
+            	return user;
             }
         }
         return null;
