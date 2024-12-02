@@ -1,4 +1,5 @@
 package model;
+import repository.UserRepository;
 
 public class User {
 	private String user_id;
@@ -23,6 +24,15 @@ public class User {
 		this.user_password = user_password;
 		this.user_role = user_role;
 	}
+	
+	 public static String register( String email, String name, String password, String role) {
+	        User user = new User(email,name,password,role);
+	        return UserRepository.createUser(user);
+	 }
+	 
+	 public static String login(String email, String password) {
+		 return UserRepository.getUserIdByEmailAndPassword(email, password);
+	 }
 
 
 	public String getUser_id() {

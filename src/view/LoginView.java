@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.User;
+import util.Response;
 
 public class LoginView extends Application{
 	
@@ -88,20 +89,20 @@ public class LoginView extends Application{
 	        Button loginButton = new Button("Login");
 	      	UserController uc = new UserController();
 	        loginButton.setOnAction(event -> {
-	            String email = emailField.getText();
+	        	String email = emailField.getText();
 	            String password = passwordField.getText();
-
+	            
 	            if (email.isEmpty() || password.isEmpty()) {
 	                errorLabel.setText("Please enter both email and password.");
-	            } else {
-	            	
-	            	User user = uc.login(email, password);
-	            	if(user == null) {
-	            		errorLabel.setText("please enter correct email or password");
-	            	}else {
-	            		
-	            	}
+	                return;
+	            } 
+	            
+	            Response<String> response = uc.login(email, password);
+	            
+	            if(!response.isSuccess()) {
+	            	errorLabel.setText(response.getMessage());
 	            }
+
 	        });
 	        return loginButton;
 	    }

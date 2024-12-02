@@ -7,5 +7,4 @@ public class Event {
 	private String event_date;
 	private String event_location;
 	private String event_description;
-	
 }

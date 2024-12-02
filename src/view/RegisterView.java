@@ -18,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import util.Response;
 
 public class RegisterView extends Application{
 
@@ -103,15 +104,18 @@ public class RegisterView extends Application{
 	            String email = emailField.getText();
 	            String role = roleComboBox.getValue();
 
-	            if (username.isEmpty() || ( password.isEmpty() && password.length() >= 5 ) || email.isEmpty() || role == null) {
-	                errorLabel.setText("All fields are required.");
-	            } else {
-	            	UserController uc = new UserController();
+	   
+	            UserController uc = new UserController();
 	            	
-	            	uc.register(email, username, password, role);
-	            	
-	                new LoginView().show(primaryStage);
+	            Response<String> response = uc.register(email, username, password, role);
+	            
+	            if(response.isSuccess()) {
+	            	new LoginView().show(primaryStage);
+	            }else {
+	            	errorLabel.setText(response.getMessage());
 	            }
+	           
+	          
 	        });
 	        return registerButton;
 	    }
