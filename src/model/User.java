@@ -1,4 +1,6 @@
 package model;
+import java.util.List;
+
 import repository.UserRepository;
 
 public class User {
@@ -32,6 +34,10 @@ public class User {
 	 
 	 public static User login(String email, String password) {
 		 return UserRepository.getUserIdByEmailAndPassword(email, password);
+	 }
+	 
+	 public static List<User> getAllUser(){
+		 return UserRepository.findAll();
 	 }
 
 

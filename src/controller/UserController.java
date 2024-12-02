@@ -1,9 +1,6 @@
 package controller;
 
-import java.util.List;
 import model.User;
-import model.User;
-import repository.UserRepository;
 import util.SessionManager;
 import util.Response;
 

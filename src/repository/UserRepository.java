@@ -73,7 +73,7 @@ public class UserRepository {
                         rs.getString("user_id"),
                         rs.getString("email"),
                         rs.getString("name"),
-                        rs.getString("password"),
+                        null,
                         rs.getString("role")
                     );
             }
@@ -97,8 +97,8 @@ public class UserRepository {
                     rs.getString("user_id"),
                     rs.getString("email"),
                     rs.getString("name"),
-                    rs.getString("password"),
-                    rs.getString("role")
+                    null,
+                    null
                 ));
             }
         } catch (SQLException e) {
@@ -123,19 +123,17 @@ public class UserRepository {
         }
         return false;
     }
-
     
-    public static boolean deleteUser(String userId) {
-    	
-    	DatabaseConnection db = DatabaseConnection.getInstance();
-    	
+    public static String deleteUser(String userId) {
+        DatabaseConnection db = DatabaseConnection.getInstance();
         String query = String.format("DELETE FROM User WHERE user_id = '%s'", userId);
+
         try {
-            db.executeUpdate(query);
-            return true;
+            db.executeUpdate(query); 
+            return "User with ID " + userId + " was successfully deleted.";
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); 
+            return "An error occurred while trying to delete the user with ID " + userId + ".";
         }
-        return false;
     }
 }
