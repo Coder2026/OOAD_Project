@@ -17,5 +17,9 @@ public class Guest extends User {
 	public static List<User> viewOrganizedEventDetails(String eventId){
 		return UserRepository.getGuests(eventId);
 	}
+	
+	public static List<User> getGuestByTransaction(String eventId){
+		return UserRepository.getGuests(eventId);
+	}
 
 }
