@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 import repository.EventRepository;
 
 public class Event {
@@ -26,4 +28,5 @@ public class Event {
 	public static String createEvent(String eventName, String date, String locataion, String description, String organizerId) {
 		return EventRepository.createEvent(eventName, date, locataion, description, organizerId);
 	}
+	
 }
