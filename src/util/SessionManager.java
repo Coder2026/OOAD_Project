@@ -1,15 +1,15 @@
 package util;
 
+import model.User; 
+
 public class SessionManager {
     private static SessionManager instance;
 
-   
-    private String user_id;
+    private User currentUser; 
 
-    
     private SessionManager() {}
 
-  
+   
     public static SessionManager getInstance() {
         if (instance == null) {
             instance = new SessionManager();
@@ -18,17 +18,17 @@ public class SessionManager {
     }
 
    
-    public String getUserId() {
-        return user_id;
+    public User getCurrentUser() {
+        return currentUser;
     }
 
    
-    public void setUserId(String userId) {
-        this.user_id = userId;
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
     }
 
    
     public void clearSession() {
-        this.user_id = null;
+        this.currentUser = null;
     }
 }

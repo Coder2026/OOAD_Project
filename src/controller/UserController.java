@@ -11,7 +11,7 @@ public class UserController {
 
 	public Response<String> register(String email, String name, String password, String role) {
 		
-	    String checkInput = checkRegisterInput(email, password);
+	    String checkInput = checkRegisterInput(email,name,password);
 	    if (!checkInput.equals("valid")) {
 	        return Response.failure(checkInput);
 	    }
@@ -36,11 +36,11 @@ public class UserController {
         	
     	 try {
     		 
-             String userId = User.login(email, password);
+             User user = User.login(email, password);
 
-             if (userId != null) {
-                 SessionManager.getInstance().setUserId(userId);
-                 return Response.success("Login successful!", userId);
+             if (user != null) {
+                 SessionManager.getInstance().setCurrentUser(user);
+                 return Response.success("Login successful!",null);
              } else {
                  return Response.failure("Invalid email or password.");
              }
@@ -51,11 +51,15 @@ public class UserController {
          }
     }
     
-    public String checkRegisterInput(String email,String password) {
+    public String checkRegisterInput(String email,String name,String password) {
         
         if (email.isEmpty()) {
           return "Email cannot be empty!";
         }
+        
+        if(name.isEmpty()) {
+       	 return "Name cannot be empty!";
+       }
         
         if(password.isEmpty()) {
         	 return "Password cannot be empty!";

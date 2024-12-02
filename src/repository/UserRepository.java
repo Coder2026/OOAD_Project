@@ -59,7 +59,7 @@ public class UserRepository {
         return null;
     }
     
-    public static String getUserIdByEmailAndPassword(String email, String password) {
+    public static User getUserIdByEmailAndPassword(String email, String password) {
     	DatabaseConnection db = DatabaseConnection.getInstance();
         String query = String.format(
             "SELECT user_id FROM User WHERE email = '%s' AND password = '%s'",
@@ -69,7 +69,13 @@ public class UserRepository {
         try {
             ResultSet rs = db.executeQuery(query);
             if (rs.next()) {
-                return rs.getString("user_id");
+                return new User(
+                        rs.getString("user_id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        rs.getString("password"),
+                        rs.getString("role")
+                    );
             }
         } catch (SQLException e) {
             e.printStackTrace();

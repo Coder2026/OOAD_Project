@@ -30,7 +30,7 @@ public class User {
 	        return UserRepository.createUser(user);
 	 }
 	 
-	 public static String login(String email, String password) {
+	 public static User login(String email, String password) {
 		 return UserRepository.getUserIdByEmailAndPassword(email, password);
 	 }
 

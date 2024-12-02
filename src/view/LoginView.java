@@ -101,6 +101,8 @@ public class LoginView extends Application{
 	            
 	            if(!response.isSuccess()) {
 	            	errorLabel.setText(response.getMessage());
+	            }else {
+	            	
 	            }
 
 	        });
