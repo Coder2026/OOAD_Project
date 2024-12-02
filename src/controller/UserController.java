@@ -19,10 +19,10 @@ public class UserController {
 	    try {
 	    	String register = User.register(email, name, password, role);
 	        if (register.equals("success")) {
-	            return Response.success("Registration was successful", "");
+	            return Response.success("Registration was successful", null);
 	        } else {
 	        	
-	            return Response.failure("Email is already registered.");
+	            return Response.failure(register);
 	        }
 	    } catch (Exception e) {
 	    	
@@ -34,13 +34,21 @@ public class UserController {
     public Response<String> login(String email, String password) {
     	
         	
-    	 String userId = User.login(email, password);
+    	 try {
+    		 
+             String userId = User.login(email, password);
 
-    	    if (userId != null) {
-    	    	SessionManager.getInstance().setUserId(userId);
-    	    	return Response.success("Login Success", null);
-    	    }
-    	    return Response.failure("Invalid email or password.");
+             if (userId != null) {
+                 SessionManager.getInstance().setUserId(userId);
+                 return Response.success("Login successful!", userId);
+             } else {
+                 return Response.failure("Invalid email or password.");
+             }
+         } catch (Exception e) {
+        	 
+             e.printStackTrace(); 
+             return Response.failure("An error occurred. Please try again later.");
+         }
     }
     
     public String checkRegisterInput(String email,String password) {
