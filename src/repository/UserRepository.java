@@ -11,10 +11,10 @@ import model.User;
 public class UserRepository {
     
    
-	public static String createUser(User user) {
+	public static String createUser(String email, String name, String password, String role) {
 	    DatabaseConnection db = DatabaseConnection.getInstance();
 
-	    String checkQuery = String.format("SELECT COUNT(*) FROM User WHERE email = '%s'", user.getUser_email());
+	    String checkQuery = String.format("SELECT COUNT(*) FROM User WHERE email = '%s'", email);
 	    System.out.println(checkQuery);
 
 	    try {
@@ -25,7 +25,7 @@ public class UserRepository {
 
 	        String insertQuery = String.format(
 	            "INSERT INTO User (email, name, password, role) VALUES ('%s', '%s', '%s', '%s')",
-	            user.getUser_email(), user.getUser_name(), user.getUser_password(), user.getUser_role()
+	            email,name,password,role
 	        );
 	        System.out.println(insertQuery);
 
@@ -105,23 +105,6 @@ public class UserRepository {
             e.printStackTrace();
         }
         return users;
-    }
-
-    
-    public static boolean updateUser(User user) {
-    	DatabaseConnection db = DatabaseConnection.getInstance();
-    	
-        String query = String.format(
-            "UPDATE User SET email = '%s', name = '%s', password = '%s', role = '%s' WHERE user_id = '%s'",
-            user.getUser_email(), user.getUser_name(), user.getUser_password(), user.getUser_role(), user.getUser_id()
-        );
-        try {
-            db.executeUpdate(query);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
     
     public static String deleteUser(String userId) {

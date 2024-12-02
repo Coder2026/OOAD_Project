@@ -14,12 +14,12 @@ public class UserController {
 	    }
 
 	    try {
-	    	String register = User.register(email, name, password, role);
-	        if (register.equals("success")) {
+	    	String registerMessege = User.register(email, name, password, role);
+	        if (registerMessege.equals("success")) {
 	            return Response.success("Registration was successful", null);
 	        } else {
 	        	
-	            return Response.failure(register);
+	            return Response.failure(registerMessege);
 	        }
 	    } catch (Exception e) {
 	    	
