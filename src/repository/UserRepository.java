@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database.DatabaseConnection;
+import model.Guest;
 import model.User;
+import model.Vendor;
 
 public class UserRepository {
     
@@ -119,4 +121,56 @@ public class UserRepository {
             return "An error occurred while trying to delete the user with ID " + userId + ".";
         }
     }
+    
+	public static List<User> getGuests(String eventId){
+		DatabaseConnection db = DatabaseConnection.getInstance();
+		List<User> participants = new ArrayList<>();
+		String query = String.format("SELECT users.*\n"
+				+ "FROM User users\n"
+				+ "INNER JOIN Event events\n"
+				+ "ON users.user_id = events.organized_id\n"
+				+ "WHERE events.event_id = '%s' and users.role = 'Guest'",eventId);
+		
+		try {
+	        ResultSet rs = db.executeQuery(query);
+	        while (rs.next()) {
+	            participants.add(new Guest(
+		                rs.getString("user_id"),
+		                rs.getString("email"),
+		                rs.getString("name"),
+		                null,
+		                null
+		            ));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return participants;
+	}
+	
+	public static List<User> getVendors(String eventId){
+		DatabaseConnection db = DatabaseConnection.getInstance();
+		List<User> participants = new ArrayList<>();
+		String query = String.format("SELECT users.*\n"
+				+ "FROM User users\n"
+				+ "INNER JOIN Event events\n"
+				+ "ON users.user_id = events.organized_id\n"
+				+ "WHERE events.event_id = '%s' and users.role = 'Vendor'",eventId);
+		
+		try {
+	        ResultSet rs = db.executeQuery(query);
+	        while (rs.next()) {
+	            participants.add(new Vendor(
+		                rs.getString("user_id"),
+		                rs.getString("email"),
+		                rs.getString("name"),
+		                null,
+		                null
+		            ));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return participants;
+	}
 }

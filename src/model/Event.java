@@ -29,4 +29,7 @@ public class Event {
 		return EventRepository.createEvent(eventName, date, locataion, description, organizerId);
 	}
 	
+	public static List<Event> viewOrganizedEvents(String userId){
+		return EventRepository.findEventsById(userId);
+	}
 }
