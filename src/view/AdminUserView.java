@@ -1,17 +1,20 @@
 package view;
 
+
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Event;
 
 public class AdminUserView extends Application{
@@ -26,7 +29,7 @@ public class AdminUserView extends Application{
 		// TODO Auto-generated method stub
 		VBox root = createLayout(primaryStage);
 		Scene scene = new Scene (root, 1200, 800);
-		primaryStage.setTitle("View All User");
+		primaryStage.setTitle("View All Users");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -38,9 +41,9 @@ public class AdminUserView extends Application{
 		Label eventLabel = new Label();
 		 Button homeBtn = new Button("Home");
 	        homeBtn.setOnAction(event ->{
-	        	new EOHomeView().show(primaryStage);
+	        	new AdminHomeView().show(primaryStage);
 	        });
-		eventLabel.setText("Organized Event View");
+		eventLabel.setText("Admin User View");
 		GridPane.setHalignment(eventLabel, HPos.CENTER);
 		grid.add(eventLabel, 0, 0);
 		grid.add(eventTable, 0, 1);
@@ -58,22 +61,53 @@ public class AdminUserView extends Application{
 	     return grid;
 	}
 
+	
+
 	private TableView<Event> createTable() {
+	        
 		 TableView<Event> tableView = new TableView<>();
 
-		  TableColumn<Event, String> eventIdCol = new TableColumn<>("Event ID");
-		    eventIdCol.setCellValueFactory(new PropertyValueFactory<>("eventId"));
+		  TableColumn<Event, String> userIdCol = new TableColumn<>("User ID");
+		    userIdCol.setCellValueFactory(new PropertyValueFactory<>("user_id"));
 
-		    TableColumn<Event, String> eventNameCol = new TableColumn<>("Event Name");
-		    eventNameCol.setCellValueFactory(new PropertyValueFactory<>("eventName"));
+		    TableColumn<Event, String> userNameCol = new TableColumn<>("User Name");
+		    userNameCol.setCellValueFactory(new PropertyValueFactory<>("user_name"));
 
-		    TableColumn<Event, String> eventDateCol = new TableColumn<>("Event Date");
-		    eventDateCol.setCellValueFactory(new PropertyValueFactory<>("eventDate"));
+		    TableColumn<Event, String> userEmailCol = new TableColumn<>("User Email");
+		    userEmailCol.setCellValueFactory(new PropertyValueFactory<>("user_email"));
+		    
+		    TableColumn<Event, Void> actionCol = new TableColumn<>("Action");
+		    Callback<TableColumn<Event, Void>, TableCell<Event, Void>> cellFactory = 
+		            new Callback<TableColumn<Event, Void>, TableCell<Event, Void>>() {
+		                @Override
+		                public TableCell<Event, Void> call(final TableColumn<Event, Void> param) {
+		                    return new TableCell<Event, Void>() {
 
-		    TableColumn<Event, String> eventLocationCol = new TableColumn<>("Event Location");
-		    eventLocationCol.setCellValueFactory(new PropertyValueFactory<>("eventLocation"));
+		                        private final Button deleteBtn = new Button("Delete");
 
-		    tableView.getColumns().addAll(eventIdCol, eventNameCol, eventDateCol, eventLocationCol);
+		                        {
+		                            deleteBtn.setOnAction(e -> {
+		                                Event selectedItem = getTableView().getItems().get(getIndex());
+		                                
+		                            });
+
+		                        }
+
+		                        @Override
+		                        protected void updateItem(Void item, boolean empty) {
+		                            super.updateItem(item, empty);
+		                            if (empty) {
+		                                setGraphic(null);
+		                            } else {
+		                                setGraphic(deleteBtn);
+		                            }
+		                        }
+		                    
+		                   };
+		               }
+		    };
+
+		    tableView.getColumns().addAll(userIdCol, userNameCol, userEmailCol, actionCol);
 		    
 		    return tableView;
 	}
