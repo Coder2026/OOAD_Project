@@ -6,6 +6,7 @@ import view.CreateEventView;
 import view.EOHomeView;
 import view.EventDetailsView;
 import view.LoginView;
+import view.ManageVendorView;
 import view.OrganizedEventView;
 
 public class Main extends Application {
@@ -13,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
        
         LoginView loginView = new LoginView();
-        EventDetailsView view = new EventDetailsView();
+        ManageVendorView view = new ManageVendorView();
         try {
 //			loginView.start(primaryStage);
 			view.start(primaryStage);
