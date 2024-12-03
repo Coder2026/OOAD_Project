@@ -6,6 +6,8 @@ import java.util.List;
 import model.User;
 import model.Vendor;
 import model.Admin;
+import model.Event;
+import model.EventOrganizer;
 import model.Guest;
 import util.Response;
 
@@ -50,4 +52,34 @@ public class AdminController {
 	        return Response.failure("An error occurred while fetching event participants.");
 	    }
 	}
+	
+	public Response<List<Event>> viewAllEvents() {
+	    try {
+	        List<Event> events = Event.viewAllEvents();
+
+	        if (events != null && !events.isEmpty()) {
+	        	return Response.success("Events retrieved successfully.", events);
+	        }
+	        
+	        return Response.failure("No events found or fetch operation failed.");
+	    } catch (Exception e) {
+	        e.printStackTrace(); 
+	        return Response.failure("An error occurred while fetching events.");
+	    }
+	}
+	
+	public Response<String> deleteEvent(String eventId) {
+	    try {
+	    	
+	        String message = Event.deleteEvent(eventId);
+
+	        return Response.success(message, null);
+	    } catch (Exception e) {
+	       
+	        e.printStackTrace();
+	        
+	        return Response.failure("An error occurred while trying to delete the event.");
+	    }
+	}
+	
 }

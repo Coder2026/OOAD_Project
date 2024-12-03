@@ -18,7 +18,7 @@ public class EventController {
 	    } catch (Exception e) {
 	    	
 	        e.printStackTrace();
-	        return Response.failure("An error occurred during registration. Please try again");
+	        return Response.failure("An error occurred during event creation. Please try again later.");
 	    }
 	}
 }

@@ -27,6 +27,6 @@ public class User {
 	 }
 	 
 	 public static List<User> getAllUser(){
-		 return UserRepository.findAll();
+		 return UserRepository.getAllUser();
 	 }	
 }

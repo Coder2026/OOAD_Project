@@ -12,7 +12,7 @@ public class Admin extends User {
 
 	
     public static List<User> getAllUsers() {
-    	return UserRepository.findAll();
+    	return UserRepository.getAllUser();
 	}
     
     public static String deleteUser(String userId) {

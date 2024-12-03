@@ -39,7 +39,7 @@ public class UserRepository {
 	    }
 	}
   
-    public User findUserById(String userId) {
+    public User getUserById(String userId) {
     	
     	DatabaseConnection db = DatabaseConnection.getInstance();
     	
@@ -86,7 +86,7 @@ public class UserRepository {
     }
 
    
-    public static List<User> findAll() {
+    public static List<User> getAllUser() {
     	
     	DatabaseConnection db = DatabaseConnection.getInstance();
     	
