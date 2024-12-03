@@ -41,4 +41,8 @@ public class Event {
 	public static String deleteEvent(String eventId) {
 		return EventRepository.deletEvent(eventId);
 	}
+	
+	public static String editEventName(String eventId,String eventName) {
+		return EventRepository.updateEventNameById(eventId, eventName);
+	}
 }

@@ -115,7 +115,7 @@ public class UserRepository {
 
         try {
             db.executeUpdate(query); 
-            return "User with ID " + userId + " was successfully deleted.";
+            return "success";
         } catch (Exception e) {
             e.printStackTrace(); 
             return "An error occurred while trying to delete the user with ID " + userId + ".";
