@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import view.CreateEventView;
 import view.EOHomeView;
+import view.EventDetailsView;
 import view.LoginView;
 import view.OrganizedEventView;
 
@@ -12,7 +13,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
        
         LoginView loginView = new LoginView();
-        EOHomeView view = new EOHomeView();
+        EventDetailsView view = new EventDetailsView();
         try {
 //			loginView.start(primaryStage);
 			view.start(primaryStage);
