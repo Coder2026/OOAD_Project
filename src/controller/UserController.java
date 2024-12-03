@@ -1,51 +1,66 @@
 package controller;
 
-import java.util.List;
-
 import model.User;
-import repository.UserRepository;
+import util.SessionManager;
+import util.Response;
 
 public class UserController {
 
-    private UserRepository userRepository;
+	public Response<String> register(String email, String name, String password, String role) {
+		
+	    String checkInput = checkRegisterInput(email,name,password);
+	    if (!checkInput.equals("valid")) {
+	        return Response.failure(checkInput);
+	    }
 
-    public UserController() {
-        userRepository = new UserRepository();
-    }
+	    try {
+	    	String registerMessege = User.register(email, name, password, role);
+	        if (registerMessege.equals("success")) {
+	            return Response.success("Registration was successful", null);
+	        } else {
+	        	
+	            return Response.failure(registerMessege);
+	        }
+	    } catch (Exception e) {
+	    	
+	        e.printStackTrace();
+	        return Response.failure("An error occurred during registration. Please try again");
+	    }
+	}
+    
+    public Response<String> login(String email, String password) {
+    	
+        	
+    	 try {
+    		 
+             User user = User.login(email, password);
 
-    public boolean register( String userEmail, String userName, String userPassword, String userRole) {
-        User user = new User(userEmail, userName, userPassword, userRole);
-        return userRepository.createUser(user);
+             if (user != null) {
+                 SessionManager.getInstance().setCurrentUser(user);
+                 return Response.success("Login successful!",null);
+             } else {
+                 return Response.failure("Invalid email or password.");
+             }
+         } catch (Exception e) {
+        	 
+             e.printStackTrace(); 
+             return Response.failure("An error occurred. Please try again later.");
+         }
     }
     
-    public User login(String email, String password) {
-        List<User> users = userRepository.findAll();
-        for (User user : users) {
-            if (user.getUser_email().equals(email) && user.getUser_password().equals(password)) {
-            	System.out.println("berhasil");
-            	return user;
-            }
+    public String checkRegisterInput(String email,String name,String password) {
+        
+        if (email.isEmpty()) {
+          return "Email cannot be empty!";
         }
-        return null;
-    }
-
-    public User getUserById(String userId) {
-        return userRepository.findById(userId);
-    }
-
-    // Get all users
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    // Update user
-    public boolean updateUser(String userEmail, String userName, String userPassword, String userRole) {
-        User user = new User(userEmail, userName, userPassword, userRole);
-        return userRepository.updateUser(user);
-    }
-
-    // Delete user
-    public boolean deleteUser(String userId) {
-        return userRepository.deleteUser(userId);
+        
+        if(name.isEmpty()) {
+       	 return "Name cannot be empty!";
+       }
+        
+        if(password.isEmpty()) {
+        	 return "Password cannot be empty!";
+        }
+        return "valid";
     }
 }
