@@ -4,9 +4,11 @@ import java.util.List;
 import model.Event;
 import model.EventOrganizer;
 import model.Guest;
+import model.Invitation;
 import model.User;
 import model.Vendor;
 import repository.EventRepository;
+import repository.InvitationRepository;
 import util.Response;
 
 public class EventOrganizerController {
@@ -71,6 +73,26 @@ public class EventOrganizerController {
         
         return "valid";
     }
-	
+    
+    public static Response<String> sendInvitation(String eventId, String userId, String status, String role) {
+        try {
+          
+            String message = Invitation.sendInvitation(eventId, userId, status, role);
+            
+           
+            if (message.equalsIgnoreCase("success")) {
+                return Response.success(
+                    "Invitation for event with ID " + eventId + " was successfully sent to user ID: " + userId + ".", 
+                    null
+                );
+            }
+           
+            return Response.failure(message);
+        } catch (Exception e) {
+           
+            e.printStackTrace();
+            return Response.failure("An error occurred while sending the invitation: " + e.getMessage());
+        }
+    }
 }
 	
