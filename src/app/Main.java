@@ -2,15 +2,21 @@ package app;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import view.CreateEventView;
+import view.EOHomeView;
+import view.EventDetailsView;
 import view.LoginView;
+import view.OrganizedEventView;
 
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
        
         LoginView loginView = new LoginView();
+        EventDetailsView view = new EventDetailsView();
         try {
-			loginView.start(primaryStage);
+//			loginView.start(primaryStage);
+			view.start(primaryStage);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
