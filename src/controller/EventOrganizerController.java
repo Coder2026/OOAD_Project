@@ -42,5 +42,35 @@ public class EventOrganizerController {
 	        return Response.failure("An error occurred while fetching event participants.");
 	    }
 	}
+	
+    public Response<String> editEventName(String eventId, String eventName) {
+        
+    	String checkInput= checkInputEditName(eventName);
+    	if(!checkInput.equals("valid")) {
+    		return Response.failure(checkInput);
+    	}
+    	
+    	try {
+            String message = Event.editEventName(eventId, eventName);
+            
+            if(message.equals("success")) {
+            	return Response.success("Event with ID " + eventId + " was successfully updated to name: " + eventName + ".",null);
+            }
+            return Response.failure(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.failure("An error occurred while editing the event name.");
+        }
+    }
+
+   
+    public String checkInputEditName(String eventName) {
+        if (eventName == null || eventName.trim().isEmpty()) {
+            return "Event name cannot be null or empty.";
+        }
+        
+        return "valid";
+    }
+	
 }
 	

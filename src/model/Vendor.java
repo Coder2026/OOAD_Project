@@ -16,5 +16,4 @@ public class Vendor extends User{
 	public static List<User> getVendorsByTransaction(String eventId){
 		return UserRepository.getVendors(eventId);
 	}
-
 }

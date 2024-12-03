@@ -27,8 +27,12 @@ public class AdminController {
 	    try {
 	    	
 	        String message = Admin.deleteUser(userId);
+	        
+	        if(message.equals("success")) {
+	        	return Response.success("User with ID " + userId + " was successfully deleted.", null);
+	        }
 
-	        return Response.success(message, null);
+	        return Response.failure(message);
 	    } catch (Exception e) {
 	       
 	        e.printStackTrace();
@@ -72,8 +76,12 @@ public class AdminController {
 	    try {
 	    	
 	        String message = Event.deleteEvent(eventId);
-
-	        return Response.success(message, null);
+	        
+	        if(message.equals("success")) {	
+	        	return Response.success("Event with ID " + eventId + " was successfully deleted.", null);
+	        }
+	        
+	        return Response.failure(message);
 	    } catch (Exception e) {
 	       
 	        e.printStackTrace();
