@@ -14,6 +14,6 @@ public class EventOrganizer extends User{
 	}
 	
 	public static List<Event> viewOrganizedEvents(String userId){
-		return EventRepository.findEventsById(userId);
+		return EventRepository.getEventsById(userId);
 	}
 }

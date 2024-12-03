@@ -28,7 +28,7 @@ public class EventRepository {
             }
 	}
 	
-	public static List<Event> findEventsById(String userId){
+	public static List<Event> getEventsById(String userId){
 		DatabaseConnection db = DatabaseConnection.getInstance();
 		
 		List<Event> events = new ArrayList<>();
@@ -55,7 +55,45 @@ public class EventRepository {
 		}
 		return events;
 	}
+
+	public static List<Event> getAllEvents() {
+		DatabaseConnection db = DatabaseConnection.getInstance();
+		
+		List<Event> events = new ArrayList<>();
+		
+		String query = String.format("SELECT * FROM Event");
+		
+		try {
+			
+			 ResultSet rs = db.executeQuery(query);
+			 
+	           while (rs.next()) {
+	                events.add(new Event(
+	                    rs.getString("event_id"),
+	                    rs.getString("name"),
+	                    rs.getString("date"),
+	                    rs.getString("location"),
+	                    rs.getString("description"),
+	                    rs.getString("organizer_id")
+	                ));
+	            }
+	           
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return events;
+	}
 	
-	
-	
+    public static String deletEvent(String eventId) {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        String query = String.format("DELETE FROM Event WHERE event_id = '%s'", eventId);
+
+        try {
+            db.executeUpdate(query); 
+            return "Event with ID " + eventId + " was successfully deleted.";
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            return "An error occurred while trying to delete the event with ID " + eventId + ".";
+        }
+    }
 }

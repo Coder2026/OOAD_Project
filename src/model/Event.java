@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 import repository.EventRepository;
+import util.Response;
 
 public class Event {
 	private String event_id;
@@ -30,6 +31,14 @@ public class Event {
 	}
 	
 	public static List<Event> viewOrganizedEvents(String userId){
-		return EventRepository.findEventsById(userId);
+		return EventRepository.getEventsById(userId);
+	}
+	
+	public static List<Event> viewAllEvents(){
+		return EventRepository.getAllEvents();
+	}
+	
+	public static String deleteEvent(String eventId) {
+		return EventRepository.deletEvent(eventId);
 	}
 }

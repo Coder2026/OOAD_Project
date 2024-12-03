@@ -17,7 +17,7 @@ public class EventOrganizerController {
 	        List<Event> events = EventOrganizer.viewOrganizedEvents(userId);
 
 	        if (events != null && !events.isEmpty()) {
-	            return Response.success("Users fetched successfully.", events);
+	        	return Response.success("Events retrieved successfully.", events);
 	        }
 	        
 	        return Response.failure("No events found or fetch operation failed.");
