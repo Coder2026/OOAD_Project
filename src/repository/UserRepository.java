@@ -16,13 +16,22 @@ public class UserRepository {
 	public static String createUser(String email, String name, String password, String role) {
 	    DatabaseConnection db = DatabaseConnection.getInstance();
 
-	    String checkQuery = String.format("SELECT COUNT(*) FROM User WHERE email = '%s'", email);
-	    System.out.println(checkQuery);
+	    String checkQuery = String.format(
+	            "SELECT email, name FROM User WHERE email = '%s' OR name = '%s'", 
+	            email, name
+	        );
+	    
 
 	    try {
+	    		
 	        ResultSet rs = db.executeQuery(checkQuery);
-	        if (rs.next() && rs.getInt(1) > 0) {
-	            return "Email is already registered!";
+	        if (rs.next()) { 
+	            if (rs.getString("email").equals(email)) {
+	                return "Email is already registered!";
+	            }
+	            if (rs.getString("name").equals(name)) {
+	                return "Name is already registered!";
+	            }
 	        }
 
 	        String insertQuery = String.format(
