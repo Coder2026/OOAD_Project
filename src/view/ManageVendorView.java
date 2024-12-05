@@ -39,14 +39,11 @@ public class ManageVendorView extends Application {
 	      HBox descBox = createLabelValueBox(descLabel, descField);
 	      Button saveButton = new Button("Save");
 	        saveButton.setOnAction(event -> {
-	            
 	        	save(productField, descField);
 	        });
-	        Button backButton = new Button("Back");
+	        Button backButton = new Button("Home");
 	        backButton.setOnAction(event -> {
-	        	
-	        	
-	         
+	        	new VendorHomeView().show(primaryStage);
 	        });
 	        HBox buttonBox = createLabelValueBox(backButton, saveButton);
 	      
@@ -58,11 +55,9 @@ public class ManageVendorView extends Application {
 	     return vbox;
 	}
 	
-	
-	  
     private void save(TextField productField, TextField descField) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private TextField createTextField(String prompt) {
