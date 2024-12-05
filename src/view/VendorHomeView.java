@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class AdminHomeView extends Application {
+public class VendorHomeView extends Application {
 
 	@Override
 	 public void start(Stage primaryStage) {
@@ -33,16 +33,21 @@ public class AdminHomeView extends Application {
 	    
         GridPane grid = createGridPane();
         
-        Button viewEventBtn = new Button("View All Events");
+        Button viewEventBtn = new Button("View Invitation");
         viewEventBtn.setOnAction(event ->{
-        	new AdminEventView().show(primaryStage);
+        	new VendorViewInvitation().show(primaryStage);
         });
-        Button createEventBtn = new Button("View All Users");
-        createEventBtn.setOnAction(event->{
-        	new AdminUserView().show(primaryStage);
+        Button view2EventBtn = new Button("View Accepted Event");
+        view2EventBtn.setOnAction(event->{
+        	new VendorViewAcceptedInvitation().show(primaryStage);
+        });
+        Button view3EventBtn = new Button("Manage Vendor");
+        view3EventBtn.setOnAction(event ->{
+        	new ManageVendorView().show(primaryStage);
         });
         grid.add(viewEventBtn, 0, 0);
-        grid.add(createEventBtn, 1, 0);
+        grid.add(view2EventBtn, 1, 0);
+        grid.add(view3EventBtn, 2, 0);
      
         VBox vbox = new VBox(grid);
         vbox.setAlignment(Pos.CENTER);

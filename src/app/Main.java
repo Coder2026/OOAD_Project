@@ -9,18 +9,20 @@ import view.EventDetailsView;
 import view.LoginView;
 import view.ManageVendorView;
 import view.OrganizedEventView;
+import view.VendorHomeView;
 
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
        
 
-        LoginView loginView = new LoginView();
-        ManageVendorView view = new ManageVendorView();
+        //LoginView loginView = new LoginView();
+        //ManageVendorView view = new ManageVendorView();
 
         //LoginView loginView = new LoginView();
         //EventDetailsView view = new EventDetailsView();
     	//AdminHomeView view = new AdminHomeView();
+        VendorHomeView view = new VendorHomeView();
 
         try {
 //			loginView.start(primaryStage);
