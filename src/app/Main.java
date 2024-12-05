@@ -20,7 +20,7 @@ public class Main extends Application {
 
         //LoginView loginView = new LoginView();
         //EventDetailsView view = new EventDetailsView();
-    	AdminHomeView view = new AdminHomeView();
+    	//AdminHomeView view = new AdminHomeView();
 
         try {
 //			loginView.start(primaryStage);
