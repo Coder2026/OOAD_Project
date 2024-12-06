@@ -17,9 +17,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Event;
 
-public class VendorViewInvitation extends Application{
+public class VendorViewInvitation{
 
-	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		show(primaryStage);

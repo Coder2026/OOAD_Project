@@ -17,9 +17,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Event;
 
-public class AdminEventView extends Application{
+public class AdminEventView{
 
-	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		show(primaryStage);
