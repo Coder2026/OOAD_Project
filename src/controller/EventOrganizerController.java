@@ -47,7 +47,7 @@ public class EventOrganizerController {
 	
     public Response<String> editEventName(String eventId, String eventName) {
         
-    	String checkInput= checkInputEditName(eventName);
+    	String checkInput= checkEditEventNameInput(eventName);
     	if(!checkInput.equals("valid")) {
     		return Response.failure(checkInput);
     	}
@@ -66,7 +66,7 @@ public class EventOrganizerController {
     }
 
    
-    public String checkInputEditName(String eventName) {
+    public String checkEditEventNameInput(String eventName) {
         if (eventName == null || eventName.trim().isEmpty()) {
             return "Event name cannot be null or empty.";
         }
