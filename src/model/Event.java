@@ -39,7 +39,7 @@ public class Event {
 	}
 	
 	public static String deleteEvent(String eventId) {
-		return EventRepository.deletEvent(eventId);
+		return EventRepository.deleteEvent(eventId);
 	}
 	
 	public static String editEventName(String eventId,String eventName) {

@@ -1,5 +1,6 @@
 package repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,82 +12,71 @@ import model.User;
 import model.Vendor;
 
 public class UserRepository {
-    
-   
+
 	public static String createUser(String email, String name, String password, String role) {
 	    DatabaseConnection db = DatabaseConnection.getInstance();
 
-	    String checkQuery = String.format(
-	            "SELECT email, name FROM User WHERE email = '%s' OR name = '%s'", 
-	            email, name
-	        );
-	    
+	    String checkQuery = "SELECT email, name FROM User WHERE email = ? OR name = ?";
 
 	    try {
-	    		
-	        ResultSet rs = db.executeQuery(checkQuery);
-	        if (rs.next()) { 
-	            if (rs.getString("email").equals(email)) {
-	                return "Email is already registered!";
-	            }
-	            if (rs.getString("name").equals(name)) {
-	                return "Name is already registered!";
+	        PreparedStatement ps = db.preparedStatement(checkQuery);
+	        if (ps != null) {
+	            ps.setString(1, email);
+	            ps.setString(2, name);
+
+	            ResultSet rs = ps.executeQuery();
+	            if (rs.next()) { 
+	                if (rs.getString("email").equals(email)) {
+	                    return "Email is already registered!";
+	                }
+	                if (rs.getString("name").equals(name)) {
+	                    return "Name is already registered!";
+	                }
 	            }
 	        }
 
-	        String insertQuery = String.format(
-	            "INSERT INTO User (email, name, password, role) VALUES ('%s', '%s', '%s', '%s')",
-	            email,name,password,role
-	        );
-	        System.out.println(insertQuery);
+	        String insertQuery = "INSERT INTO User (email, name, password, role) VALUES (?, ?, ?, ?)";
+	        PreparedStatement insertPs = db.preparedStatement(insertQuery);
+	        if (insertPs != null) {
+	            insertPs.setString(1, email);
+	            insertPs.setString(2, name);
+	            insertPs.setString(3, password);
+	            insertPs.setString(4, role);
 
-	        db.executeUpdate(insertQuery);
-	        return "success";
-	    } catch (Exception e) {
+	            int rowsAffected = insertPs.executeUpdate();
+	            if (rowsAffected > 0) {
+	                return "success";
+	            } else {
+	                return "Failed to create user.";
+	            }
+	        }
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return "An error occurred while creating the user. Please try again.";
 	    }
+	    return null;
 	}
-  
-    public User getUserById(String userId) {
-    	
-    	DatabaseConnection db = DatabaseConnection.getInstance();
-    	
-        String query = String.format("SELECT * FROM User WHERE user_id = '%s'", userId);
-        try {
-            ResultSet rs = db.executeQuery(query);
-            if (rs.next()) {
-                return new User(
-                    rs.getString("user_id"),
-                    rs.getString("email"),
-                    rs.getString("name"),
-                    rs.getString("password"),
-                    rs.getString("role")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
+
     public static User getUserIdByEmailAndPassword(String email, String password) {
-    	DatabaseConnection db = DatabaseConnection.getInstance();
-        String query = String.format(
-            "SELECT user_id FROM User WHERE email = '%s' AND password = '%s'",
-            email, password
-        );
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        String query = "SELECT user_id FROM User WHERE email = ? AND password = ?";
 
         try {
-            ResultSet rs = db.executeQuery(query);
-            if (rs.next()) {
-                return new User(
+            PreparedStatement ps = db.preparedStatement(query);
+            if (ps != null) {
+                ps.setString(1, email);
+                ps.setString(2, password);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    return new User(
                         rs.getString("user_id"),
                         rs.getString("email"),
                         rs.getString("name"),
                         null,
                         rs.getString("role")
                     );
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,92 +84,103 @@ public class UserRepository {
         return null;
     }
 
-   
     public static List<User> getAllUser() {
-    	
-    	DatabaseConnection db = DatabaseConnection.getInstance();
-    	
+        DatabaseConnection db = DatabaseConnection.getInstance();
+
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM User";
         try {
-            ResultSet rs = db.executeQuery(query);
-            while (rs.next()) {
-                users.add(new User(
-                    rs.getString("user_id"),
-                    rs.getString("email"),
-                    rs.getString("name"),
-                    null,
-                    null
-                ));
+            PreparedStatement ps = db.preparedStatement(query);
+            if (ps != null) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    users.add(new User(
+                        rs.getString("user_id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        null,
+                        null
+                    ));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return users;
     }
-    
+
     public static String deleteUser(String userId) {
         DatabaseConnection db = DatabaseConnection.getInstance();
-        String query = String.format("DELETE FROM User WHERE user_id = '%s'", userId);
+        String query = "DELETE FROM User WHERE user_id = ?";
 
         try {
-            db.executeUpdate(query); 
-            return "success";
-        } catch (Exception e) {
-            e.printStackTrace(); 
+            PreparedStatement ps = db.preparedStatement(query);
+            if (ps != null) {
+                ps.setString(1, userId);
+                
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected > 0) {
+                    return "success";
+                } else {
+                    return "No user found with the provided ID.";
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
             return "An error occurred while trying to delete the user with ID " + userId + ".";
         }
+        return null;
     }
-    
-	public static List<User> getGuests(String eventId){
-		DatabaseConnection db = DatabaseConnection.getInstance();
-		List<User> participants = new ArrayList<>();
-		String query = String.format("SELECT users.*\n"
-				+ "FROM User users\n"
-				+ "INNER JOIN Event events\n"
-				+ "ON users.user_id = events.organized_id\n"
-				+ "WHERE events.event_id = '%s' and users.role = 'Guest'",eventId);
-		
-		try {
-	        ResultSet rs = db.executeQuery(query);
-	        while (rs.next()) {
-	            participants.add(new Guest(
-		                rs.getString("user_id"),
-		                rs.getString("email"),
-		                rs.getString("name"),
-		                null,
-		                null
-		            ));
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return participants;
-	}
-	
-	public static List<User> getVendors(String eventId){
-		DatabaseConnection db = DatabaseConnection.getInstance();
-		List<User> participants = new ArrayList<>();
-		String query = String.format("SELECT users.*\n"
-				+ "FROM User users\n"
-				+ "INNER JOIN Event events\n"
-				+ "ON users.user_id = events.organized_id\n"
-				+ "WHERE events.event_id = '%s' and users.role = 'Vendor'",eventId);
-		
-		try {
-	        ResultSet rs = db.executeQuery(query);
-	        while (rs.next()) {
-	            participants.add(new Vendor(
-		                rs.getString("user_id"),
-		                rs.getString("email"),
-		                rs.getString("name"),
-		                null,
-		                null
-		            ));
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return participants;
-	}
+
+    public static List<User> getGuests(String eventId) {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        List<User> participants = new ArrayList<>();
+        String query = "SELECT users.* FROM User users INNER JOIN Event events ON users.user_id = events.organized_id WHERE events.event_id = ? and users.role = 'Guest'";
+
+        try {
+            PreparedStatement ps = db.preparedStatement(query);
+            if (ps != null) {
+                ps.setString(1, eventId);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    participants.add(new Guest(
+                        rs.getString("user_id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        null,
+                        null
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return participants;
+    }
+
+    public static List<User> getVendors(String eventId) {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        List<User> participants = new ArrayList<>();
+        String query = "SELECT users.* FROM User users INNER JOIN Event events ON users.user_id = events.organized_id WHERE events.event_id = ? and users.role = 'Vendor'";
+
+        try {
+            PreparedStatement ps = db.preparedStatement(query);
+            if (ps != null) {
+                ps.setString(1, eventId);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    participants.add(new Vendor(
+                        rs.getString("user_id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        null,
+                        null
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return participants;
+    }
 }

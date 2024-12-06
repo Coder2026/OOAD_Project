@@ -77,7 +77,7 @@ public class EventOrganizerController {
     public static Response<String> sendInvitation(String eventId, String userId, String status, String role) {
         try {
           
-            String message = Invitation.sendInvitation(eventId, userId, status, role);
+            String message = Invitation.sendInvitation(eventId, userId,role);
             
            
             if (message.equalsIgnoreCase("success")) {
