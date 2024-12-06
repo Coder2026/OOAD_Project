@@ -21,8 +21,8 @@ public class Invitation {
 	}
 	
 	
-	public static String sendInvitation(String eventId, String userId, String status, String role) {
-		return InvitationRepository.createInvitation(eventId, userId, status, role);
+	public static String sendInvitation(String eventId, String userId, String role) {
+		return InvitationRepository.createInvitation(eventId, userId, role);
 	}
 	
 }

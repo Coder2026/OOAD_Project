@@ -48,19 +48,24 @@ public class UserController {
          }
     }
     
-    public String checkRegisterInput(String email,String name,String password) {
+    public String checkRegisterInput(String email, String name, String password) {
         
         if (email.isEmpty()) {
-          return "Email cannot be empty!";
+            return "Email cannot be empty!";
         }
         
-        if(name.isEmpty()) {
-       	 return "Name cannot be empty!";
-       }
-        
-        if(password.isEmpty()) {
-        	 return "Password cannot be empty!";
+        if (name.isEmpty()) {
+            return "Name cannot be empty!";
         }
+        
+        if (password.isEmpty()) {
+            return "Password cannot be empty!";
+        }
+        
+        if (password.length() < 5) {
+            return "Password must be at least 5 characters!";
+        }
+        
         return "valid";
     }
 }

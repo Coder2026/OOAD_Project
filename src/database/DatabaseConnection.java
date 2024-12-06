@@ -2,6 +2,7 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,6 +25,7 @@ public class DatabaseConnection {
 	
 	private Connection con;
 	private Statement stmt;
+	private PreparedStatement ps;
 	
 	
 	public DatabaseConnection() {
@@ -64,5 +66,13 @@ public class DatabaseConnection {
 		}
 	}
 	
-	
+	public PreparedStatement preparedStatement(String query) {
+	    try {
+	    	ps = con.prepareStatement(query);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	       
+	    }
+	    return ps;
+	}
 }
