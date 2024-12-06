@@ -74,6 +74,8 @@ public class EventOrganizerController {
         return "valid";
     }
     
+ 
+    
     public static Response<String> sendInvitation(String eventId, String userId, String status, String role) {
         try {
           
