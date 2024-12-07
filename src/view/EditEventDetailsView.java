@@ -41,7 +41,7 @@ public class EditEventDetailsView extends Application{
 
 	        Label eventNameLabel = new Label("Event Name:");
 	        Label eventDateLabel = new Label("Event Date:");
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	 
 	        Label eventLocationLabel = new Label("Event Location:");
 	        Label eventDescriptionLabel = new Label("Event Description:");

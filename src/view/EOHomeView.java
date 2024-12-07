@@ -11,17 +11,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class EOHomeView extends Application {
+public class EOHomeView {
 
-	@Override
-	 public void start(Stage primaryStage) {
-		   
-        show(primaryStage);
-    }
 
-    public void show(Stage primaryStage) {
 
-        VBox root = createLayout(primaryStage);
+    public void show(Stage primaryStage, String id) {
+
+        VBox root = createLayout(primaryStage, id);
 
         Scene scene = new Scene(root, 400, 300);
         primaryStage.setTitle("Home");
@@ -29,17 +25,17 @@ public class EOHomeView extends Application {
         primaryStage.show();
     }
     
-    private VBox createLayout(Stage primaryStage) {
+    private VBox createLayout(Stage primaryStage, String id) {
 	    
         GridPane grid = createGridPane();
         
         Button createEventBtn = new Button("Create Event");
         createEventBtn.setOnAction(event->{
-        	new CreateEventView().show(primaryStage);
+        	new CreateEventView().show(primaryStage, id);
         });
         Button viewEventBtn = new Button("View All Events");
         viewEventBtn.setOnAction(event ->{
-        	new OrganizedEventView().show(primaryStage);
+        	new OrganizedEventView().show(primaryStage, id);
         });
         grid.add(viewEventBtn, 1, 0);
         grid.add(createEventBtn, 0, 0);

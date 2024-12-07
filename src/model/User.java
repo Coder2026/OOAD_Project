@@ -18,7 +18,24 @@ public class User {
 		this.user_role = user_role;
 	}
 	
-	 public static String register( String email, String name, String password, String role) {
+	 public String getUser_role() {
+		return user_role;
+	}
+
+	public void setUser_role(String user_role) {
+		this.user_role = user_role;
+	}
+	
+	
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+
+	public static String register( String email, String name, String password, String role) {
 	        return UserRepository.createUser(email,name,password,role);
 	 }
 	 

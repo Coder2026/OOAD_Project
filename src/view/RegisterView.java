@@ -84,7 +84,7 @@ public class RegisterView extends Application{
 
 	    private ComboBox<String> createComboBox(String prompt) {
 	        ComboBox<String> comboBox = new ComboBox<>();
-	        comboBox.getItems().addAll("Admin", "Event Organizer","Guest","Vendor");
+	        comboBox.getItems().addAll("Admin", "EventOrganizer","Guest","Vendor");
 	        comboBox.setPromptText(prompt);
 	        return comboBox;
 	    }

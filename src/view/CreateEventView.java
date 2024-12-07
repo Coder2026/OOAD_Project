@@ -1,7 +1,9 @@
 package view;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+import controller.EventController;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,68 +16,90 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import util.Response;
 
-public class CreateEventView extends Application {
+public class CreateEventView{
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+
+
+	public void show(Stage primaryStage, String id) {
 		// TODO Auto-generated method stub
-		show(primaryStage);
-	}
-
-	public void show(Stage primaryStage) {
-		// TODO Auto-generated method stub
-		VBox root = createLayout(primaryStage);
+		VBox root = createLayout(primaryStage, id);
 		 Scene scene = new Scene(root, 400, 350);
 	        primaryStage.setTitle("Create Events");
 	        primaryStage.setScene(scene);
 	        primaryStage.show();
 	}
 
-	private VBox createLayout(Stage primaryStage) {
+	private VBox createLayout(Stage primaryStage, String id) {
 		// TODO Auto-generated method stub
 		GridPane grid = createGridLayout();
 		 TextField nameField = createTextField("Enter Event Name");
 		 TextField locationField = createTextField("Enter Event Location");
 		 TextField descField = createTextField("Enter Event Description");
 		 DatePicker datePicker = new DatePicker();
-	     Label errorLabel = createErrorLabel();
-	     Button submitButton = createSubmitButton(nameField, datePicker, locationField, descField, errorLabel);
-		 Button homeButton = createHomebutton(primaryStage);
+	     Label successLabel = createErrorLabel(Color.GREEN);
+	     Label errorLabel = createErrorLabel(Color.RED);
+	     Button submitButton = createSubmitButton(nameField, datePicker, locationField, descField, errorLabel, successLabel, id);
+		 Button homeButton = createHomebutton(primaryStage, id);
 		 addGridRow(grid, 0, new Label("Event Name:"), nameField);
 		 addGridRow(grid, 1, new Label("Event Date:"), datePicker);
 	     addGridRow(grid, 2, new Label("Location:"), locationField);
 	     addGridRow(grid, 3, new Label("Description:"), descField);
 	     grid.add(errorLabel, 1, 4);
+	     grid.add(successLabel, 1, 4);
+	     
 	     addGridRow(grid, 5, homeButton, submitButton);
 		VBox vbox = new VBox(grid);
 		vbox.setAlignment(Pos.CENTER);
 		return vbox;
 	}
 	
-	  private Button createHomebutton(Stage primaryStage) {
+	  private Button createHomebutton(Stage primaryStage, String id) {
 		  Button homeButton = new Button("Home");
-	        homeButton.setOnAction(event -> new EOHomeView().show(primaryStage));
+	        homeButton.setOnAction(event -> new EOHomeView().show(primaryStage, id));
 	        return homeButton;
 	}
 
 	private Button createSubmitButton(TextField nameField, DatePicker datePicker, TextField locationField,
-			TextField descField, Label errorLabel) {
-		// TODO Auto-generated method stub
+			TextField descField, Label errorLabel, Label successLabel, String id) {
+		
 		  Button submitButton = new Button("Submit");
-		  
 		  submitButton.setOnAction(event -> {
 		       
 		        String name = nameField.getText();
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		        LocalDate date = datePicker.getValue(); 
+		        String formattedDate = "";
+		        if (date != null) {
+		            formattedDate = formatter.format(date);
+		        } else {
+		            errorLabel.setText("Please select a date");
+		            return; 
+		        }
 		        String location = locationField.getText();
 		        String description = descField.getText();
-		        	
-		        if (name.isEmpty() || date == null || location.isEmpty() || description.isEmpty()) {
-		            errorLabel.setText("Ensure all fields are filled.");
-		        }else {
-		        	
-		        }
+		        
+		        EventController ec = new EventController();
+		      
+		       
+		            
+		            
+		            Response<String> response = ec.createEvent(name, formattedDate, location, description, id);
+			        
+			        if (response.isSuccess()) {
+			        	nameField.clear();
+				        datePicker.setValue(null);
+				        locationField.clear();
+				        descField.clear();
+			        	errorLabel.setVisible(false);
+			            successLabel.setText(response.getMessage());
+			        }else {
+			        	 errorLabel.setText(response.getMessage());
+			        }
+		      
+		        
+		        
 		      
 		    });
 		return submitButton;
@@ -101,11 +125,12 @@ public class CreateEventView extends Application {
 	        return textField;
 	  }
 	 
-	 	private Label createErrorLabel() {
-	        Label errorLabel = new Label();
-	        errorLabel.setTextFill(Color.RED);
-	        return errorLabel;
-	    }
+	 private Label createErrorLabel(Color color) {
+		    Label errorLabel = new Label();
+		    errorLabel.setTextFill(color);
+		    return errorLabel;
+		}
+
 	 
 	
 

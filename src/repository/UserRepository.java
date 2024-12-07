@@ -59,7 +59,7 @@ public class UserRepository {
 
     public static User getUserIdByEmailAndPassword(String email, String password) {
         DatabaseConnection db = DatabaseConnection.getInstance();
-        String query = "SELECT user_id FROM User WHERE email = ? AND password = ?";
+        String query = "SELECT * FROM User WHERE email = ? AND password = ?";
 
         try {
             PreparedStatement ps = db.preparedStatement(query);

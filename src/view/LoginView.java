@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.User;
 import util.Response;
+import util.SessionManager;
 
 public class LoginView extends Application{
 	
@@ -46,7 +47,7 @@ public class LoginView extends Application{
 	        addGridRow(grid, 0, new Label("Email:"), emailField);
 	        addGridRow(grid, 1, new Label("Password:"), passwordField);
 
-	        Button loginButton = createLoginButton(emailField, passwordField, errorLabel);
+	        Button loginButton = createLoginButton(emailField, passwordField, errorLabel, primaryStage);
 	        Button registerButton = createRegisterButton(primaryStage);
 
 	        addGridRow(grid, 2, registerButton, loginButton);
@@ -85,7 +86,7 @@ public class LoginView extends Application{
 	        return errorLabel;
 	    }
 
-	    private Button createLoginButton(TextField emailField, PasswordField passwordField, Label errorLabel) {
+	    private Button createLoginButton(TextField emailField, PasswordField passwordField, Label errorLabel, Stage primaryStage) {
 	        Button loginButton = new Button("Login");
 	      	UserController uc = new UserController();
 	        loginButton.setOnAction(event -> {
@@ -102,7 +103,11 @@ public class LoginView extends Application{
 	            if(!response.isSuccess()) {
 	            	errorLabel.setText(response.getMessage());
 	            }else {
-	            	
+	            	User currentUser = SessionManager.getInstance().getCurrentUser();
+	            	String role = currentUser.getUser_role();
+	            	if(role.equalsIgnoreCase("eventOrganizer")) {
+	            		new EOHomeView().show(primaryStage, currentUser.getUser_id() );
+	            	}
 	            }
 
 	        });
