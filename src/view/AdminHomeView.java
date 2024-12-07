@@ -11,10 +11,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class AdminHomeView extends Application {
+public class AdminHomeView {
 
-	@Override
-	 public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) {
 		   
         show(primaryStage);
     }
