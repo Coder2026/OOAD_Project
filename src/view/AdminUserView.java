@@ -17,9 +17,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Event;
 
-public class AdminUserView extends Application{
+public class AdminUserView {
 
-	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
 		show(primaryStage);

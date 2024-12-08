@@ -12,9 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ManageVendorView extends Application {
+public class ManageVendorView{
 
-	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
 		show(primaryStage);
@@ -62,7 +61,7 @@ public class ManageVendorView extends Application {
 	private TextField createTextField(String prompt) {
     	 TextField textField = new TextField();
     	 textField.setPromptText(prompt);
-		return textField;
+    	 return textField;
 	}
 
 	private HBox createLabelValueBox(Node... nodes) {
