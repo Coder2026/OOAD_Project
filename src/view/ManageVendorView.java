@@ -12,16 +12,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ManageVendorView extends Application {
+public class ManageVendorView{
 
-	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+		
 		show(primaryStage);
 	}
 
 	public void show(Stage primaryStage) {
-		// TODO Auto-generated method stub
+		
 		  VBox root = createLayout(primaryStage);
 	        Scene scene = new Scene(root, 800, 600);
 	        primaryStage.setTitle("Manage Vendor");
@@ -56,14 +55,13 @@ public class ManageVendorView extends Application {
 	}
 	
     private void save(TextField productField, TextField descField) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	private TextField createTextField(String prompt) {
     	 TextField textField = new TextField();
     	 textField.setPromptText(prompt);
-		return textField;
+    	 return textField;
 	}
 
 	private HBox createLabelValueBox(Node... nodes) {

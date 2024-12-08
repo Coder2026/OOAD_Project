@@ -16,7 +16,7 @@ public class UserRepository {
 	public static String createUser(String email, String name, String password, String role) {
 	    DatabaseConnection db = DatabaseConnection.getInstance();
 
-	    String checkQuery = "SELECT email, name FROM User WHERE email = ? OR name = ?";
+	    String checkQuery = "SELECT * name FROM User WHERE email = ? OR name = ?";
 
 	    try {
 	        PreparedStatement ps = db.preparedStatement(checkQuery);
@@ -66,6 +66,7 @@ public class UserRepository {
             if (ps != null) {
                 ps.setString(1, email);
                 ps.setString(2, password);
+                
 
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
@@ -135,7 +136,8 @@ public class UserRepository {
     public static List<User> getGuests(String eventId) {
         DatabaseConnection db = DatabaseConnection.getInstance();
         List<User> participants = new ArrayList<>();
-        String query = "SELECT users.* FROM User users INNER JOIN Event events ON users.user_id = events.organized_id WHERE events.event_id = ? and users.role = 'Guest'";
+        String query = "SELECT users.* FROM User users INNER JOIN Invitation invitations ON users.user_id = invitations.user_id WHERE invitations.event_id = ? and users.role = 'Guest'"
+        		+ "AND invitations.status = 'Accepted'";
 
         try {
             PreparedStatement ps = db.preparedStatement(query);
@@ -161,7 +163,8 @@ public class UserRepository {
     public static List<User> getVendors(String eventId) {
         DatabaseConnection db = DatabaseConnection.getInstance();
         List<User> participants = new ArrayList<>();
-        String query = "SELECT users.* FROM User users INNER JOIN Event events ON users.user_id = events.organized_id WHERE events.event_id = ? and users.role = 'Vendor'";
+        String query = "SELECT users.* FROM User users INNER JOIN Invitation invitations ON users.user_id = invitations.organized_id WHERE events.event_id = ? and users.role = 'Vendor'"
+        		+ "AND invitations.status = 'Accepted'";
 
         try {
             PreparedStatement ps = db.preparedStatement(query);

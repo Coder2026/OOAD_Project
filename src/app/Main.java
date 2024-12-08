@@ -16,17 +16,17 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
        
 
-        //LoginView loginView = new LoginView();
-        //ManageVendorView view = new ManageVendorView();
-
         LoginView loginView = new LoginView();
+        //ManageVendorView view = new ManageVendorView();
+      
         //EventDetailsView view = new EventDetailsView();
     	//AdminHomeView view = new AdminHomeView();
        // EOHomeView view = new EOHomeView();
-
+      
         try {
 		loginView.start(primaryStage);
 		//view.start(primaryStage);
+          
 		} catch (Exception e) {
 			
 			e.printStackTrace();

@@ -17,16 +17,15 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Event;
 
-public class AdminUserView extends Application{
+public class AdminUserView {
 
-	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+		
 		show(primaryStage);
 	}
 
 	public void show(Stage primaryStage) {
-		// TODO Auto-generated method stub
+		
 		VBox root = createLayout(primaryStage);
 		Scene scene = new Scene (root, 1200, 800);
 		primaryStage.setTitle("View All Users");
@@ -35,7 +34,7 @@ public class AdminUserView extends Application{
 	}
 
 	private VBox createLayout(Stage primaryStage) {
-		// TODO Auto-generated method stub
+		
 		GridPane grid = createGridPane();
 		TableView<Event> eventTable = createTable();
 		Label eventLabel = new Label();
@@ -111,9 +110,4 @@ public class AdminUserView extends Application{
 		    
 		    return tableView;
 	}
-
-	
-	
-	
-	
 }

@@ -20,11 +20,10 @@ import util.Response;
 
 public class CreateEventView{
 
-
-
 	public void show(Stage primaryStage, String id) {
 		// TODO Auto-generated method stub
 		VBox root = createLayout(primaryStage, id);
+
 		 Scene scene = new Scene(root, 400, 350);
 	        primaryStage.setTitle("Create Events");
 	        primaryStage.setScene(scene);
@@ -33,6 +32,7 @@ public class CreateEventView{
 
 	private VBox createLayout(Stage primaryStage, String id) {
 		// TODO Auto-generated method stub
+  
 		GridPane grid = createGridLayout();
 		 TextField nameField = createTextField("Enter Event Name");
 		 TextField locationField = createTextField("Enter Event Location");
@@ -60,10 +60,12 @@ public class CreateEventView{
 	        homeButton.setOnAction(event -> new EOHomeView().show(primaryStage, id));
 	        return homeButton;
 	}
+	  
+	
 
 	private Button createSubmitButton(TextField nameField, DatePicker datePicker, TextField locationField,
+
 			TextField descField, Label errorLabel, Label successLabel, String id) {
-		
 		  Button submitButton = new Button("Submit");
 		  submitButton.setOnAction(event -> {
 		       
@@ -111,7 +113,7 @@ public class CreateEventView{
 	   }
 
 	private GridPane createGridLayout() {
-		// TODO Auto-generated method stub
+		
 		 GridPane grid = new GridPane();
 	        grid.setVgap(10);
 	        grid.setHgap(10);
@@ -130,8 +132,5 @@ public class CreateEventView{
 		    errorLabel.setTextFill(color);
 		    return errorLabel;
 		}
-
-	 
-	
 
 }
