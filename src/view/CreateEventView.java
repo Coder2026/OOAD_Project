@@ -19,12 +19,13 @@ public class CreateEventView extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+		
 		show(primaryStage);
 	}
 
 	public void show(Stage primaryStage) {
-		// TODO Auto-generated method stub
+		
+		
 		VBox root = createLayout(primaryStage);
 		 Scene scene = new Scene(root, 400, 350);
 	        primaryStage.setTitle("Create Events");
@@ -33,7 +34,7 @@ public class CreateEventView extends Application {
 	}
 
 	private VBox createLayout(Stage primaryStage) {
-		// TODO Auto-generated method stub
+		
 		GridPane grid = createGridLayout();
 		 TextField nameField = createTextField("Enter Event Name");
 		 TextField locationField = createTextField("Enter Event Location");
@@ -58,10 +59,12 @@ public class CreateEventView extends Application {
 	        homeButton.setOnAction(event -> new EOHomeView().show(primaryStage));
 	        return homeButton;
 	}
+	  
+	
 
 	private Button createSubmitButton(TextField nameField, DatePicker datePicker, TextField locationField,
 			TextField descField, Label errorLabel) {
-		// TODO Auto-generated method stub
+		
 		  Button submitButton = new Button("Submit");
 		  
 		  submitButton.setOnAction(event -> {
@@ -87,7 +90,7 @@ public class CreateEventView extends Application {
 	   }
 
 	private GridPane createGridLayout() {
-		// TODO Auto-generated method stub
+		
 		 GridPane grid = new GridPane();
 	        grid.setVgap(10);
 	        grid.setHgap(10);
