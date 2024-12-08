@@ -1,28 +1,39 @@
 package view;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import controller.EventOrganizerController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import model.Event;
+import model.User;
+import util.Response;
 
 public class EventDetailsView {
 
-
-    public void show(Stage primaryStage, String eventId) {
-        VBox root = createLayout(primaryStage, eventId);
+	private TableView<User> tableView;
+	
+    public void show(Stage primaryStage, String eventId, Event selectedEvent) {
+        VBox root = createLayout(primaryStage, eventId, selectedEvent);
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setTitle("View Event Details");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        fetchEventDetails(eventId);
     }
 
-    private VBox createLayout(Stage primaryStage, String eventId) {
+    private VBox createLayout(Stage primaryStage, String eventId, Event selectedEvent) {
         GridPane grid = createGridPane();
 
         Label eventDetailsLabel = new Label("Event Details");
@@ -42,7 +53,8 @@ public class EventDetailsView {
         Label eventDescriptionValue = new Label();
         
         
-        TableView<String> attendeeTable = createTable();
+    
+        TableView<User> attendeeTable = createTable();
 
       
         Button editEventButton = new Button("Edit Event");
@@ -54,7 +66,7 @@ public class EventDetailsView {
         Button backButton = new Button("Back");
         backButton.setOnAction(event -> {
         	
-        	new OrganizedEventView().show(primaryStage, eventId);
+        	new OrganizedEventView().show(primaryStage, selectedEvent.getOrganizer_id());
          
         });
    
@@ -67,13 +79,12 @@ public class EventDetailsView {
         HBox eventLocationBox = createLabelValueBox(eventLocationLabel, eventLocationValue);
         HBox eventDescriptionBox = createLabelValueBox(eventDescriptionLabel, eventDescriptionValue);
     
-//        Event event = fetchEventDetails(eventId);
 
    
-//        eventNameValue.setText(event.getName());
-//        eventDateValue.setText(event.getDate());
-//        eventLocationValue.setText(event.getLocation());
-//        eventDescriptionValue.setText(event.getDescription());
+       eventNameValue.setText(selectedEvent.getEvent_name());
+       eventDateValue.setText(selectedEvent.getEvent_date());
+       eventLocationValue.setText(selectedEvent.getEvent_location());
+        eventDescriptionValue.setText(selectedEvent.getEvent_description());
 
         grid.add(eventDetailsLabel, 0, 0);
         grid.add(eventNameBox, 0, 1);
@@ -93,26 +104,42 @@ public class EventDetailsView {
         return vbox;
     }
     
-    private HBox createLabelValueBox(Node... nodes) {
+    private void fetchEventDetails(String eventId) {
+		EventOrganizerController ec = new EventOrganizerController();
+		 Response<List<User>> eventResponse = ec.viewOrganizedEventDetails(eventId);
+		 
+		 if (eventResponse.isSuccess()) {
+	            ObservableList<User> eventData = FXCollections.observableArrayList(eventResponse.getData());
+	            tableView.setItems(eventData);
+	        }
+	}
+
+	private HBox createLabelValueBox(Node... nodes) {
         HBox hbox = new HBox(10);
         hbox.getChildren().addAll(nodes);
         hbox.setAlignment(Pos.CENTER_LEFT); 
         return hbox;
     }
 
-    private TableView<String> createTable() {
-    	 TableView<String> table = new TableView<>();
-         table.setPrefHeight(200); 
+	
 
-         TableColumn<String, String> vendorColumn = new TableColumn<>("Vendor");
-         vendorColumn.setMinWidth(100);
 
-         TableColumn<String, String> guestColumn = new TableColumn<>("Guest");
-         guestColumn.setMinWidth(100);
+	    private TableView<User> createTable() {
+	        tableView = new TableView<>(); 
+	        tableView.setPrefHeight(200);
 
-         table.getColumns().addAll(vendorColumn, guestColumn);
-         return table;
-	}
+	        TableColumn<User, String> vendorColumn = new TableColumn<>("Name");
+	        vendorColumn.setCellValueFactory(new PropertyValueFactory<>("user_name"));
+	        vendorColumn.setMinWidth(100);
+
+	        TableColumn<User, String> guestColumn = new TableColumn<>("Role");
+	        guestColumn.setCellValueFactory(new PropertyValueFactory<>("user_role"));
+	        guestColumn.setMinWidth(100);
+
+	        tableView.getColumns().addAll(vendorColumn, guestColumn);
+	        return tableView;
+	    }
+	
 
 	private GridPane createGridPane() {
         GridPane grid = new GridPane();

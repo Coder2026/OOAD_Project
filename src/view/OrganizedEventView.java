@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -51,12 +52,19 @@ public class OrganizedEventView {
         TableColumn<Event, Void> buttonColumn = new TableColumn<>("Actions");
         buttonColumn.setCellFactory(column -> {
             return new TableCell<Event, Void>() {
-                private final Button viewButton = new Button("View Details");
+                private final Button viewButton = new Button("View");
                 
                 {
                     viewButton.setOnAction(event -> {
-                        Event eventData = getTableView().getItems().get(getIndex());
-                        new EventDetailsView().show(primaryStage, eventData.getEvent_id());
+                       
+                        Event selectedEvent = getTableView().getItems().get(getIndex());
+                        
+                        if (selectedEvent != null) {
+                            System.out.println("Selected Event before sending: " + selectedEvent); 
+                            System.out.println("Event ID: " + selectedEvent.getEvent_id());
+                            System.out.println("Event Name: " + selectedEvent.getEvent_name());
+                            new EventDetailsView().show(primaryStage, selectedEvent.getEvent_id(), selectedEvent);
+                        }
                     });
                 }
 
@@ -71,6 +79,7 @@ public class OrganizedEventView {
                 }
             };
         });
+
         
         tableView.getColumns().add(buttonColumn);
         
@@ -93,7 +102,7 @@ public class OrganizedEventView {
 
     private TableView<Event> createTable() {
         TableView<Event> tableView = new TableView<>();
-    
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         TableColumn<Event, String> eventIdColumn = new TableColumn<>("Event ID");
         eventIdColumn.setCellValueFactory(new PropertyValueFactory<>("event_id"));
         

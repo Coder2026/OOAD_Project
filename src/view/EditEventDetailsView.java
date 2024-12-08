@@ -66,7 +66,7 @@ public class EditEventDetailsView extends Application{
 	        Button backButton = new Button("Back");
 	        backButton.setOnAction(event -> {
 	        	
-	        	new EventDetailsView().show(primaryStage, "event123");
+	        //	new EventDetailsView().show(primaryStage, "event123");
 	         
 	        });
 	        
