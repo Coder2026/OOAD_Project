@@ -11,12 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class EventDetailsView extends Application {
+public class EventDetailsView {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        show(primaryStage, "event123");
-    }
 
     public void show(Stage primaryStage, String eventId) {
         VBox root = createLayout(primaryStage, eventId);
@@ -34,7 +30,7 @@ public class EventDetailsView extends Application {
 
         Label eventNameLabel = new Label("Event Name:");
         Label eventDateLabel = new Label("Event Date:");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
  
         Label eventLocationLabel = new Label("Event Location:");
         Label eventDescriptionLabel = new Label("Event Description:");
@@ -52,13 +48,13 @@ public class EventDetailsView extends Application {
         Button editEventButton = new Button("Edit Event");
         editEventButton.setOnAction(event -> {
             System.out.println("Edit Event button clicked.");
-            new EditEventDetailsView().show(primaryStage, "event123");
+            new EditEventDetailsView().show(primaryStage, eventId);
         });
         
         Button backButton = new Button("Back");
         backButton.setOnAction(event -> {
         	
-        	new OrganizedEventView().show(primaryStage);
+        	new OrganizedEventView().show(primaryStage, eventId);
          
         });
    

@@ -18,15 +18,15 @@ public class Main extends Application {
 
         LoginView loginView = new LoginView();
         //ManageVendorView view = new ManageVendorView();
-
-        //LoginView loginView = new LoginView();
+      
         //EventDetailsView view = new EventDetailsView();
     	//AdminHomeView view = new AdminHomeView();
-//        VendorHomeView view = new VendorHomeView();
-
+       // EOHomeView view = new EOHomeView();
+      
         try {
-			loginView.start(primaryStage);
-			//view.start(primaryStage);
+		loginView.start(primaryStage);
+		//view.start(primaryStage);
+          
 		} catch (Exception e) {
 			
 			e.printStackTrace();

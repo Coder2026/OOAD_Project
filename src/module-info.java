@@ -6,4 +6,5 @@ module StellarFest {
 	requires javafx.base;
 
     exports app;
+    opens model to javafx.base;
 }
