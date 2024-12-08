@@ -15,12 +15,12 @@ import javafx.stage.Stage;
 public class ManageVendorView{
 
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+		
 		show(primaryStage);
 	}
 
 	public void show(Stage primaryStage) {
-		// TODO Auto-generated method stub
+		
 		  VBox root = createLayout(primaryStage);
 	        Scene scene = new Scene(root, 800, 600);
 	        primaryStage.setTitle("Manage Vendor");
@@ -55,8 +55,7 @@ public class ManageVendorView{
 	}
 	
     private void save(TextField productField, TextField descField) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	private TextField createTextField(String prompt) {

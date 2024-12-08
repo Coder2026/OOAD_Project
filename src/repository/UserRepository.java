@@ -16,7 +16,7 @@ public class UserRepository {
 	public static String createUser(String email, String name, String password, String role) {
 	    DatabaseConnection db = DatabaseConnection.getInstance();
 
-	    String checkQuery = "SELECT email, name FROM User WHERE email = ? OR name = ?";
+	    String checkQuery = "SELECT * name FROM User WHERE email = ? OR name = ?";
 
 	    try {
 	        PreparedStatement ps = db.preparedStatement(checkQuery);
@@ -59,13 +59,14 @@ public class UserRepository {
 
     public static User getUserIdByEmailAndPassword(String email, String password) {
         DatabaseConnection db = DatabaseConnection.getInstance();
-        String query = "SELECT user_id FROM User WHERE email = ? AND password = ?";
+        String query = "SELECT * FROM User WHERE email = ? AND password = ?";
 
         try {
             PreparedStatement ps = db.preparedStatement(query);
             if (ps != null) {
                 ps.setString(1, email);
                 ps.setString(2, password);
+                
 
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {

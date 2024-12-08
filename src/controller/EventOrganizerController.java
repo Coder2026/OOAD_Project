@@ -96,5 +96,7 @@ public class EventOrganizerController {
             return Response.failure("An error occurred while sending the invitation: " + e.getMessage());
         }
     }
+    
+    
 }
 	

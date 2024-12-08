@@ -25,7 +25,6 @@ public class AdminController {
 	
 	public Response<String> deleteUser(String userId) {
 	    try {
-	
 	    	
 	        String message = Admin.deleteUser(userId);
 	        

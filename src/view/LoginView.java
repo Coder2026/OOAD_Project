@@ -28,11 +28,13 @@ public class LoginView extends Application{
 	    public void show(Stage primaryStage) {
 
 	        VBox root = createLayout(primaryStage);
-
+	        
 	        Scene scene = new Scene(root, 400, 300);
 	        primaryStage.setTitle("Login");
 	        primaryStage.setScene(scene);
 	        primaryStage.show();
+	        
+	        
 	    }
 
 	    private VBox createLayout(Stage primaryStage) {
