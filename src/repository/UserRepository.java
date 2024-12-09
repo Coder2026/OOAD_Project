@@ -109,6 +109,56 @@ public class UserRepository {
         }
         return users;
     }
+    
+    public static List<User> getGuests() {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM User WHERE role = 'Guest'";
+        try {
+            PreparedStatement ps = db.preparedStatement(query);
+            if (ps != null) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    users.add(new Guest(
+                        rs.getString("user_id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        null,
+                        null
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+    
+    public static List<User> getVendors() {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM User WHERE role = 'Vendor'";
+        try {
+            PreparedStatement ps = db.preparedStatement(query);
+            if (ps != null) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    users.add(new Guest(
+                        rs.getString("user_id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        null,
+                        null
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
 
     public static String deleteUser(String userId) {
         DatabaseConnection db = DatabaseConnection.getInstance();
