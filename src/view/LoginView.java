@@ -1,7 +1,6 @@
 package view;
 
 import controller.UserController;
-
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,115 +17,114 @@ import model.User;
 import util.Response;
 import util.SessionManager;
 
-public class LoginView extends Application{
-	
-	   @Override
-	    public void start(Stage primaryStage) {
-	   
-	        show(primaryStage);
-	    }
+public class LoginView {
+    private GridPane grid;
+    private TextField emailField;
+    private PasswordField passwordField;
+    private Label errorLabel;
+    private Button loginButton;
+    private Button registerButton;
+    private VBox root;
+    private Stage primaryStage;
+    
+    public void show(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        init();
+        
+        Scene scene = new Scene(root, 400, 300);
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-	    public void show(Stage primaryStage) {
+    private void init() {
+   
+        grid = createGridPane();
+        emailField = createTextField("Enter Email");
+        passwordField = createPasswordField("Enter Password");
+        errorLabel = createErrorLabel();
+        loginButton = createLoginButton();
+        registerButton = createRegisterButton();
 
-	        VBox root = createLayout(primaryStage);
-	        
-	        Scene scene = new Scene(root, 400, 300);
-	        primaryStage.setTitle("Login");
-	        primaryStage.setScene(scene);
-	        primaryStage.show();
-	        
-	        
-	    }
 
-	    private VBox createLayout(Stage primaryStage) {
-	    
-	        GridPane grid = createGridPane();
-	        
-	        TextField emailField = createTextField("Enter Email");
-	        PasswordField passwordField = createPasswordField("Enter Password");
-	        Label errorLabel = createErrorLabel();
+        addGridRow(grid, 0, new Label("Email:"), emailField);
+        addGridRow(grid, 1, new Label("Password:"), passwordField);
+        addGridRow(grid, 2, registerButton, loginButton);
+        grid.add(errorLabel, 1, 3);
 
-	        addGridRow(grid, 0, new Label("Email:"), emailField);
-	        addGridRow(grid, 1, new Label("Password:"), passwordField);
+  
+        root = new VBox(grid);
+        root.setAlignment(Pos.CENTER);
+    }
 
-	        Button loginButton = createLoginButton(emailField, passwordField, errorLabel, primaryStage);
-	        Button registerButton = createRegisterButton(primaryStage);
+    private GridPane createGridPane() {
+        GridPane grid = new GridPane();
+        grid.setVgap(10);
+        grid.setHgap(10);
+        grid.setAlignment(Pos.CENTER);
+        return grid;
+    }
 
-	        addGridRow(grid, 2, registerButton, loginButton);
-	        grid.add(errorLabel, 1, 3);
+    private TextField createTextField(String prompt) {
+        TextField textField = new TextField();
+        textField.setPromptText(prompt);
+        return textField;
+    }
 
-	     
-	        VBox vbox = new VBox(grid);
-	        vbox.setAlignment(Pos.CENTER);
+    private PasswordField createPasswordField(String prompt) {
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText(prompt);
+        return passwordField;
+    }
 
-	        return vbox;
-	    }
+    private Label createErrorLabel() {
+        Label errorLabel = new Label();
+        errorLabel.setTextFill(Color.RED);
+        return errorLabel;
+    }
 
-	    private GridPane createGridPane() {
-	        GridPane grid = new GridPane();
-	        grid.setVgap(10);
-	        grid.setHgap(10);
-	        grid.setAlignment(Pos.CENTER);
-	        return grid;
-	    }
+    private Button createLoginButton() {
+        Button loginButton = new Button("Login");
+        UserController uc = new UserController();
+        
+        loginButton.setOnAction(event -> {
+            String email = emailField.getText();
+            String password = passwordField.getText();
+            
+            if (email.isEmpty() || password.isEmpty()) {
+                errorLabel.setText("Please enter both email and password.");
+                return;
+            } 
+            
+            Response<String> response = uc.login(email, password);
+            
+            if(!response.isSuccess()) {
+                errorLabel.setText(response.getMessage());
+            } else {
+                User currentUser = SessionManager.getInstance().getCurrentUser();
+                String role = currentUser.getUser_role();
+                if(role.equalsIgnoreCase("eventOrganizer")) {
+                    new EOHomeView().show(primaryStage, currentUser.getUser_id());
+                }else if(role.equalsIgnoreCase("Admin")) {
+                	new AdminHomeView().show(primaryStage);
+                }else if(role.equalsIgnoreCase("Guest")) {
+                	
+                }else if(role.equalsIgnoreCase("Vendor")) {
+                	
+                }
+            }
+        });
+        return loginButton;
+    }
 
-	    private TextField createTextField(String prompt) {
-	        TextField textField = new TextField();
-	        textField.setPromptText(prompt);
-	        return textField;
-	    }
+    private Button createRegisterButton() {
+        Button registerButton = new Button("Register");
+        registerButton.setOnAction(event -> new RegisterView().show(primaryStage));
+        return registerButton;
+    }
 
-	    private PasswordField createPasswordField(String prompt) {
-	        PasswordField passwordField = new PasswordField();
-	        passwordField.setPromptText(prompt);
-	        return passwordField;
-	    }
-
-	    private Label createErrorLabel() {
-	        Label errorLabel = new Label();
-	        errorLabel.setTextFill(Color.RED);
-	        return errorLabel;
-	    }
-
-	    private Button createLoginButton(TextField emailField, PasswordField passwordField, Label errorLabel, Stage primaryStage) {
-	        Button loginButton = new Button("Login");
-	      	UserController uc = new UserController();
-	        loginButton.setOnAction(event -> {
-	        	String email = emailField.getText();
-	            String password = passwordField.getText();
-	            
-	            if (email.isEmpty() || password.isEmpty()) {
-	                errorLabel.setText("Please enter both email and password.");
-	                return;
-	            } 
-	            
-	            Response<String> response = uc.login(email, password);
-	            
-	            if(!response.isSuccess()) {
-	            	errorLabel.setText(response.getMessage());
-	            }else {
-	            	User currentUser = SessionManager.getInstance().getCurrentUser();
-	            	String role = currentUser.getUser_role();
-	            	if(role.equalsIgnoreCase("eventOrganizer")) {
-	            		new EOHomeView().show(primaryStage, currentUser.getUser_id() );
-	            	}
-	            }
-
-	        });
-	        return loginButton;
-	    }
-
-	    private Button createRegisterButton(Stage primaryStage) {
-	        Button registerButton = new Button("Register");
-	        registerButton.setOnAction(event -> new RegisterView().show(primaryStage));
-	        return registerButton;
-	    }
-
-	    private void addGridRow(GridPane grid, int rowIndex, Control control1, Control control2) {
-	        grid.add(control1, 0, rowIndex);
-	        grid.add(control2, 1, rowIndex);
-	    }
-
-	
-	
+    private void addGridRow(GridPane grid, int rowIndex, Control control1, Control control2) {
+        grid.add(control1, 0, rowIndex);
+        grid.add(control2, 1, rowIndex);
+    }
 }

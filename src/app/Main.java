@@ -24,7 +24,7 @@ public class Main extends Application {
        // EOHomeView view = new EOHomeView();
       
         try {
-		loginView.start(primaryStage);
+		loginView.show(primaryStage);
 		//view.start(primaryStage);
           
 		} catch (Exception e) {

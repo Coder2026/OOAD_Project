@@ -42,7 +42,7 @@ public class AddVendorGuestView extends Application {
 	        Button backButton = new Button("Back");
 	        backButton.setOnAction(event -> {
 	          
-	            new EditEventDetailsView().show(primaryStage, "event123");
+	          //  new EditEventDetailsView().show(primaryStage, "event123", "123");
 	        });
 	        Button addButton = new Button("Add");
 	        addButton.setOnAction(event -> {
