@@ -1,12 +1,18 @@
 package view;
 
 
+import java.util.List;
+
+import controller.AdminController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -15,28 +21,34 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import model.Event;
+import model.User;
+import model.User;
+import util.Response;
 
 public class AdminUserView {
-
-	public void start(Stage primaryStage) throws Exception {
-		
-		show(primaryStage);
-	}
+	
+	private TableView<User> tableView;
+	private Stage primaryStage;
+	private String id;
+	private VBox root;
 
 	public void show(Stage primaryStage) {
 		
+		this.primaryStage = primaryStage;
+        this.id = id;
 		VBox root = createLayout(primaryStage);
 		Scene scene = new Scene (root, 1200, 800);
 		primaryStage.setTitle("View All Users");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		loadData();
 	}
 
 	private VBox createLayout(Stage primaryStage) {
 		
 		GridPane grid = createGridPane();
-		TableView<Event> eventTable = createTable();
+		TableView<User> eventTable = createTable();
 		Label eventLabel = new Label();
 		 Button homeBtn = new Button("Home");
 	        homeBtn.setOnAction(event ->{
@@ -62,52 +74,69 @@ public class AdminUserView {
 
 	
 
-	private TableView<Event> createTable() {
+	private TableView<User> createTable() {
+		
+		TableColumn<User, Void> actionCol = new TableColumn<>("Action");
+	    Callback<TableColumn<User, Void>, TableCell<User, Void>> cellFactory = 
+	            new Callback<TableColumn<User, Void>, TableCell<User, Void>>() {
+	                @Override
+	                public TableCell<User, Void> call(final TableColumn<User, Void> param) {
+	                    return new TableCell<User, Void>() {
+
+	                        private final Button deleteBtn = new Button("Delete");
+
+	                        {
+	                        	deleteBtn.setOnAction(e -> {
+	                                User selectedItem = getTableView().getItems().get(getIndex());
+	                                selectedItem.deleteUser(selectedItem.getUser_id());
+	                                tableView.getItems().remove(selectedItem);
+	                            });
+	                       
+
+	                        }
+
+	                        @Override
+	                        protected void updateItem(Void item, boolean empty) {
+	                            super.updateItem(item, empty);
+	                            if (empty) {
+	                                setGraphic(null);
+	                            } else {
+	                                setGraphic(deleteBtn);
+	                            }
+	                        }
+	                    
+	                   };
+	               }
+	    };
+	    
+		 tableView = new TableView<>();
+	        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+	        actionCol.setCellFactory(cellFactory);
+	        tableView.getColumns().addAll(
+	            createColumn("User ID", "user_id"),
+	            createColumn("User Name", "user_name"),
+	            createColumn("User Email", "user_email"),
+	            actionCol
+	        );
 	        
-		 TableView<Event> tableView = new TableView<>();
-
-		  TableColumn<Event, String> userIdCol = new TableColumn<>("User ID");
-		    userIdCol.setCellValueFactory(new PropertyValueFactory<>("user_id"));
-
-		    TableColumn<Event, String> userNameCol = new TableColumn<>("User Name");
-		    userNameCol.setCellValueFactory(new PropertyValueFactory<>("user_name"));
-
-		    TableColumn<Event, String> userEmailCol = new TableColumn<>("User Email");
-		    userEmailCol.setCellValueFactory(new PropertyValueFactory<>("user_email"));
-		    
-		    TableColumn<Event, Void> actionCol = new TableColumn<>("Action");
-		    Callback<TableColumn<Event, Void>, TableCell<Event, Void>> cellFactory = 
-		            new Callback<TableColumn<Event, Void>, TableCell<Event, Void>>() {
-		                @Override
-		                public TableCell<Event, Void> call(final TableColumn<Event, Void> param) {
-		                    return new TableCell<Event, Void>() {
-
-		                        private final Button deleteBtn = new Button("Delete");
-
-		                        {
-		                            deleteBtn.setOnAction(e -> {
-		                                Event selectedItem = getTableView().getItems().get(getIndex());
-		                                
-		                            });
-
-		                        }
-
-		                        @Override
-		                        protected void updateItem(Void item, boolean empty) {
-		                            super.updateItem(item, empty);
-		                            if (empty) {
-		                                setGraphic(null);
-		                            } else {
-		                                setGraphic(deleteBtn);
-		                            }
-		                        }
-		                    
-		                   };
-		               }
-		    };
-
-		    tableView.getColumns().addAll(userIdCol, userNameCol, userEmailCol, actionCol);
-		    
+		   
 		    return tableView;
 	}
+	
+	private TableColumn<User, String> createColumn(String header, String property) {
+        TableColumn<User, String> column = new TableColumn<>(header);
+        column.setCellValueFactory(new PropertyValueFactory<>(property));
+        return column;
+    }
+	
+	public void loadData() {
+        AdminController controller = new AdminController();
+        Response<List<User>> response = controller.getAllUser();
+
+        if (response.isSuccess()) {
+            ObservableList<User> userData = FXCollections.observableArrayList(response.getData());
+            tableView.setItems(userData);
+
+        }
+    }
 }

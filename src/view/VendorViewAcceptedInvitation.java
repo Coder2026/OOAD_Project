@@ -1,12 +1,19 @@
 package view;
 
 
+import java.util.List;
+
+import controller.AdminController;
+import controller.VendorController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -16,21 +23,27 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Event;
+import model.User;
+import util.Response;
 
 public class VendorViewAcceptedInvitation{
 
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-		show(primaryStage);
-	}
+	private TableView<Event> tableView;
+	private Stage primaryStage;
+	private String id;
+	private VBox root;
 
-	public void show(Stage primaryStage) {
+	public void show(Stage primaryStage, String Id) {
 		// TODO Auto-generated method stub
+		this.primaryStage = primaryStage;
+		this.id = id;
 		VBox root = createLayout(primaryStage);
 		Scene scene = new Scene (root, 1200, 800);
 		primaryStage.setTitle("View Accepted Events");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		loadData(Id);
 	}
 
 	private VBox createLayout(Stage primaryStage) {
@@ -66,32 +79,34 @@ public class VendorViewAcceptedInvitation{
 	        
 		 TableView<Event> tableView = new TableView<>();
 
-		  TableColumn<Event, String> eventIdCol = new TableColumn<>("Event ID");
-		    eventIdCol.setCellValueFactory(new PropertyValueFactory<>("event_id"));
+	        tableView.getColumns().addAll(
+	            createColumn("Event ID", "event_id"),
+	            createColumn("Event Name", "event_name"),
+	            createColumn("Event Date", "event_date"),
+	            createColumn("Event Location", "event_location"),
+	            createColumn("Event Description", "event_description"),
+	            createColumn("Event Organizer", "event_organizer")
+	        );
 
-		    TableColumn<Event, String> eventNameCol = new TableColumn<>("Event Name");
-		    eventNameCol.setCellValueFactory(new PropertyValueFactory<>("event_name"));
-
-		    TableColumn<Event, String> eventDateCol = new TableColumn<>("Event Date");
-		    eventDateCol.setCellValueFactory(new PropertyValueFactory<>("event_date"));
-
-		    TableColumn<Event, String> eventLocationCol = new TableColumn<>("Event Location");
-		    eventLocationCol.setCellValueFactory(new PropertyValueFactory<>("event_location"));
-		    
-		    TableColumn<Event, String> eventDescriptionCol = new TableColumn<>("Event Description");
-		    eventDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("event_description"));
-		    
-		    TableColumn<Event, String> eventOrganizerCol = new TableColumn<>("Event Organizer");
-		    eventOrganizerCol.setCellValueFactory(new PropertyValueFactory<>("event_organizer"));
-		    
-		    
-
-		    tableView.getColumns().addAll(eventIdCol, eventNameCol, eventDateCol, eventLocationCol, eventDescriptionCol, eventOrganizerCol);
-		    
 		    return tableView;
 	}
 
+	private TableColumn<Event, String> createColumn(String header, String property) {
+        TableColumn<Event, String> column = new TableColumn<>(header);
+        column.setCellValueFactory(new PropertyValueFactory<>(property));
+        return column;
+    }
 	
+	public void loadData(String eventId) {
+        VendorController controller = new VendorController();
+        //Response<List<User>> response = controller.getAllAcceptedEvent(eventId);
+
+//        if (response.isSuccess()) {
+//            ObservableList<User> eventData = FXCollections.observableArrayList(response.getData());
+//            //tableView.setItems(eventData);
+//
+//        }
+    }
 	
 	
 	

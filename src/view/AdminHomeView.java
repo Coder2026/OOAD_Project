@@ -12,13 +12,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class AdminHomeView {
-
-	public void start(Stage primaryStage) {
-		   
-        show(primaryStage);
-    }
+	
+	private VBox root;
+    private GridPane grid;
+    private Button createEventBtn;
+    private Button viewEventBtn;
+    private Stage primaryStage;
+    private String id;
 
     public void show(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.id = id;
 
         VBox root = createLayout(primaryStage);
 
@@ -36,12 +40,12 @@ public class AdminHomeView {
         viewEventBtn.setOnAction(event ->{
         	new AdminEventView().show(primaryStage);
         });
-        Button createEventBtn = new Button("View All Users");
-        createEventBtn.setOnAction(event->{
+        Button viewUserBtn = new Button("View All Users");
+        viewUserBtn.setOnAction(event->{
         	new AdminUserView().show(primaryStage);
         });
         grid.add(viewEventBtn, 0, 0);
-        grid.add(createEventBtn, 1, 0);
+        grid.add(viewUserBtn, 1, 0);
      
         VBox vbox = new VBox(grid);
         vbox.setAlignment(Pos.CENTER);
