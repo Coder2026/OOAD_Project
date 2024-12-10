@@ -89,7 +89,7 @@ public class UserRepository {
         DatabaseConnection db = DatabaseConnection.getInstance();
 
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM User";
+        String query = "SELECT * FROM User WHERE role != 'Admin'";
         try {
             PreparedStatement ps = db.preparedStatement(query);
             if (ps != null) {
