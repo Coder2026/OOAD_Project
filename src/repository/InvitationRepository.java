@@ -31,7 +31,7 @@ public class InvitationRepository {
                     }
                 }
             }
-    
+            
             PreparedStatement ps = db.preparedStatement(query);
             if (ps != null) {
             	
