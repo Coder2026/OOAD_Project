@@ -145,7 +145,7 @@ public class UserRepository {
             if (ps != null) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    users.add(new Guest(
+                    users.add(new Vendor(
                         rs.getString("user_id"),
                         rs.getString("email"),
                         rs.getString("name"),
