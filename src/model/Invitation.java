@@ -25,4 +25,6 @@ public class Invitation {
 		return InvitationRepository.createInvitation(eventId, userId, role);
 	}
 	
+	
+	
 }
