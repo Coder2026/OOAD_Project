@@ -45,6 +45,24 @@ public class EventOrganizerController {
 	    }
 	}
 	
+	public Response<List<User>> getGuests() {
+	    List<User> guests = Guest.getGuests();
+
+	    if (guests != null && !guests.isEmpty()) {
+	        return Response.success("Guests fetched successfully.", guests);
+	    }
+	    return Response.failure("No users found or fetch operation failed.");
+	}
+	
+	public Response<List<User>> getVendors() {
+	    List<User> vendors = Vendor.getVendors();
+
+	    if (vendors != null && vendors.isEmpty()) {
+	        return Response.success("Vendors fetched successfully.", vendors);
+	    }
+	    return Response.failure("No users found or fetch operation failed.");
+	}
+	
     public Response<String> editEventName(String eventId, String eventName) {
         
     	String checkInput= checkEditEventNameInput(eventName);
