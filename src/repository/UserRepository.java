@@ -16,7 +16,7 @@ public class UserRepository {
 	public static String createUser(String email, String name, String password, String role) {
 	    DatabaseConnection db = DatabaseConnection.getInstance();
 
-	    String checkQuery = "SELECT * name FROM User WHERE email = ? OR name = ?";
+	    String checkQuery = "SELECT * FROM User WHERE email = ? OR name = ?";
 
 	    try {
 	        PreparedStatement ps = db.preparedStatement(checkQuery);
