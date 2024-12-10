@@ -103,6 +103,7 @@ public class LoginView {
             } else {
                 User currentUser = SessionManager.getInstance().getCurrentUser();
                 String role = currentUser.getUser_role();
+          
                 if(role.equalsIgnoreCase("eventOrganizer")) {
                     new EOHomeView().show(primaryStage, currentUser.getUser_id());
                 }else if(role.equalsIgnoreCase("Admin")) {

@@ -94,7 +94,7 @@ public class EventOrganizerController {
     
  
     
-    public static Response<String> sendInvitation(String eventId, String userId, String status, String role) {
+    public Response<String> sendInvitation(String eventId, String userId, String role) {
         try {
           
             String message = Invitation.sendInvitation(eventId, userId,role);
