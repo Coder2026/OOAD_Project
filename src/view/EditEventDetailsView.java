@@ -75,10 +75,10 @@ public class EditEventDetailsView {
         backButton.setOnAction(event -> new OrganizedEventView().show(primaryStage, selectedEvent.getOrganizer_id()));
 
         Button addVendorButton = new Button("Add Vendors");
-        addVendorButton.setOnAction(event -> new AddVendorGuestView().show(primaryStage, "Vendors"));
+        addVendorButton.setOnAction(event -> new AddVendorGuestView().show(primaryStage, "Vendors", eventId));
 
         Button addGuestButton = new Button("Add Guests");
-        addGuestButton.setOnAction(event -> new AddVendorGuestView().show(primaryStage, "Guests"));
+        addGuestButton.setOnAction(event -> new AddVendorGuestView().show(primaryStage, "Guests", eventId));
 
         HBox buttonBox = new HBox(10, addVendorButton, addGuestButton);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
