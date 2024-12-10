@@ -1,5 +1,8 @@
 package view;
 
+import java.util.List;
+
+import controller.EventOrganizerController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,13 +15,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.User;
+import util.Response;
 
-public class AddVendorGuestView extends Application {
+public class AddVendorGuestView {
 
-	@Override
-	   public void start(Stage primaryStage) throws Exception {
-        show(primaryStage, "Vendors");
-    }
+	EventOrganizerController ec;
 
     public void show(Stage primaryStage, String listType) {
     	   VBox root = createLayout(primaryStage, listType);
@@ -59,12 +61,24 @@ public class AddVendorGuestView extends Application {
 	}
 
 	private ListView<CheckBox> getGuest() {
-		// TODO Auto-generated method stub
-		  ObservableList<CheckBox> guestItems = FXCollections.observableArrayList(  
-			        new CheckBox("Guest 1"),  
-			        new CheckBox("Guest 2"),  
-			        new CheckBox("Guest 3")  
-			    );  
+		
+		ec = new EventOrganizerController();
+		Response<List<User>> response = ec.getGuests();
+		ObservableList<CheckBox> guestItems = FXCollections.observableArrayList();
+		 if (response.isSuccess() && response.getData() != null) {
+
+		        for (User guest : response.getData()) {
+		      
+		            CheckBox checkBox = new CheckBox(guest.getUser_name());
+		            
+		            checkBox.setUserData(guest);
+		            
+		            guestItems.add(checkBox);
+		        }
+		    } else {
+		     
+		        System.out.println("Failed to fetch guests: " + response.getMessage());
+		    }
 
 			    ListView<CheckBox> listView = new ListView<>(guestItems);  
 			    listView.setPrefHeight(200);  
@@ -74,13 +88,24 @@ public class AddVendorGuestView extends Application {
 	}
 
 	private ListView<CheckBox> getVendor() {
-		// TODO Auto-generated method stub
+		
+		ec = new EventOrganizerController();
+		Response<List<User>> response = ec.getVendors();
+		ObservableList<CheckBox> vendorItems = FXCollections.observableArrayList();
+		 if (response.isSuccess() && response.getData() != null) {
 
-		 		ObservableList<CheckBox> vendorItems = FXCollections.observableArrayList(  
-			        new CheckBox("Vendor 1"),  
-			        new CheckBox("Vendor 2"),  
-			        new CheckBox("Vendor 3")  
-			    );  
+		        for (User vendor : response.getData()) {
+		      
+		            CheckBox checkBox = new CheckBox(vendor.getUser_name());
+	
+		            checkBox.setUserData(vendor);
+		          
+		            vendorItems.add(checkBox);
+		        }
+		    } else {
+		     
+		        System.out.println("Failed to fetch guests: " + response.getMessage());
+		    }
 
 			    ListView<CheckBox> listView = new ListView<>(vendorItems);  
 			    listView.setPrefHeight(200);  
