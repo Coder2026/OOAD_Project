@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 public class Event {
 	private String organizer_id;
