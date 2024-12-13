@@ -29,16 +29,6 @@ public class UserController {
         return null;
     }
 
-    public User getUserById(String userId) {
-        return userRepository.findById(userId);
-    }
-
-    // Get all users
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    // Update user
     public boolean updateUser(String userEmail, String userName, String userPassword, String userRole) {
         User user = new User(userEmail, userName, userPassword, userRole);
         return userRepository.updateUser(user);
