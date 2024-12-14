@@ -1,6 +1,7 @@
 package model;
 import java.util.List;
 
+import repository.EventRepository;
 import repository.UserRepository;
 
 public class User {
@@ -62,5 +63,9 @@ public class User {
 	 
 	 public static List<User> getAllUser(){
 		 return UserRepository.getAllUser();
-	 }	
+	 }
+	 
+	 public static String deleteUser(String userId) {
+		return UserRepository.deleteUser(userId);
+	}
 }

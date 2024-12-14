@@ -1,12 +1,19 @@
 package view;
 
 
+import java.util.List;
+
+import controller.AdminController;
+import controller.EventOrganizerController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -16,25 +23,30 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Event;
+import util.Response;
 
 public class AdminEventView{
-
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-		show(primaryStage);
-	}
+	
+	private TableView<Event> tableView;
+	private Stage primaryStage;
+	private VBox root;
 
 	public void show(Stage primaryStage) {
 		// TODO Auto-generated method stub
+		this.primaryStage = primaryStage;
+        
 		VBox root = createLayout(primaryStage);
 		Scene scene = new Scene (root, 1200, 800);
 		primaryStage.setTitle("View All Events");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		loadData();
 	}
 
 	private VBox createLayout(Stage primaryStage) {
 		// TODO Auto-generated method stub
+		
 		GridPane grid = createGridPane();
 		TableView<Event> eventTable = createTable();
 		Label eventLabel = new Label();
@@ -63,65 +75,71 @@ public class AdminEventView{
 	
 
 	private TableView<Event> createTable() {
+		
+		TableColumn<Event, Void> actionCol = new TableColumn<>("Action");
+	    Callback<TableColumn<Event, Void>, TableCell<Event, Void>> cellFactory = 
+	            new Callback<TableColumn<Event, Void>, TableCell<Event, Void>>() {
+	                @Override
+	                public TableCell<Event, Void> call(final TableColumn<Event, Void> param) {
+	                    return new TableCell<Event, Void>() {
+
+	                        private final Button deleteBtn = new Button("Delete");
+
+	                        {
+	                            deleteBtn.setOnAction(e -> {
+	                                Event selectedItem = getTableView().getItems().get(getIndex());
+	                                selectedItem.deleteEvent(selectedItem.getEvent_id());
+	                                tableView.getItems().remove(selectedItem);
+	                            });
+
+	                        }
+
+	                        @Override
+	                        protected void updateItem(Void item, boolean empty) {
+	                            super.updateItem(item, empty);
+	                            if (empty) {
+	                                setGraphic(null);
+	                            } else {
+	                                setGraphic(deleteBtn);
+	                            }
+	                        }
+	                    
+	                   };
+	               }
+	    };
 	        
-		 TableView<Event> tableView = new TableView<>();
-
-		  TableColumn<Event, String> eventIdCol = new TableColumn<>("Event ID");
-		    eventIdCol.setCellValueFactory(new PropertyValueFactory<>("event_id"));
-
-		    TableColumn<Event, String> eventNameCol = new TableColumn<>("Event Name");
-		    eventNameCol.setCellValueFactory(new PropertyValueFactory<>("event_name"));
-
-		    TableColumn<Event, String> eventDateCol = new TableColumn<>("Event Date");
-		    eventDateCol.setCellValueFactory(new PropertyValueFactory<>("event_date"));
-
-		    TableColumn<Event, String> eventLocationCol = new TableColumn<>("Event Location");
-		    eventLocationCol.setCellValueFactory(new PropertyValueFactory<>("event_location"));
-		    
-		    TableColumn<Event, String> eventDescriptionCol = new TableColumn<>("Event Description");
-		    eventDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("event_description"));
-		    
-		    TableColumn<Event, String> eventOrganizerCol = new TableColumn<>("Event Organizer");
-		    eventOrganizerCol.setCellValueFactory(new PropertyValueFactory<>("event_organizer"));
-		    
-		    TableColumn<Event, Void> actionCol = new TableColumn<>("Action");
-		    Callback<TableColumn<Event, Void>, TableCell<Event, Void>> cellFactory = 
-		            new Callback<TableColumn<Event, Void>, TableCell<Event, Void>>() {
-		                @Override
-		                public TableCell<Event, Void> call(final TableColumn<Event, Void> param) {
-		                    return new TableCell<Event, Void>() {
-
-		                        private final Button deleteBtn = new Button("Delete");
-
-		                        {
-		                            deleteBtn.setOnAction(e -> {
-		                                Event selectedItem = getTableView().getItems().get(getIndex());
-		                                
-		                            });
-
-		                        }
-
-		                        @Override
-		                        protected void updateItem(Void item, boolean empty) {
-		                            super.updateItem(item, empty);
-		                            if (empty) {
-		                                setGraphic(null);
-		                            } else {
-		                                setGraphic(deleteBtn);
-		                            }
-		                        }
-		                    
-		                   };
-		               }
-		    };
-
-		    tableView.getColumns().addAll(eventIdCol, eventNameCol, eventDateCol, eventLocationCol, eventDescriptionCol, eventOrganizerCol, actionCol);
-		    
+		 tableView = new TableView<>();
+	        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+	        actionCol.setCellFactory(cellFactory);
+	        tableView.getColumns().addAll(
+	            createColumn("Event ID", "event_id"),
+	            createColumn("Event Name", "event_name"),
+	            createColumn("Event Date", "event_date"),
+	            createColumn("Location", "event_location"),
+	            createColumn("Description", "event_description"),
+	            createColumn("Organizer ID", "organizer_id"),
+	            actionCol
+	        );
+	        
+ 
 		    return tableView;
 	}
+	
+    private TableColumn<Event, String> createColumn(String header, String property) {
+        TableColumn<Event, String> column = new TableColumn<>(header);
+        column.setCellValueFactory(new PropertyValueFactory<>(property));
+        return column;
+    }
+	
+	public void loadData() {
+        AdminController controller = new AdminController();
+        Response<List<Event>> response = controller.viewAllEvents();
 
-	
-	
+        if (response.isSuccess()) {
+            ObservableList<Event> eventData = FXCollections.observableArrayList(response.getData());
+            tableView.setItems(eventData);
+        }
+    }
 	
 	
 }
