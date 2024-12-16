@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 import repository.UserRepository;
+import repository.VendorRepository;
 
 public class Vendor extends User{
 	
@@ -14,10 +15,10 @@ public class Vendor extends User{
 	}
 	
 	public static List<User> getVendorsByTransaction(String eventId){
-		return UserRepository.getVendors(eventId);
+		return VendorRepository.getVendors(eventId);
 	}
 	
 	public static List<User> getVendors(){
-		return UserRepository.getVendors();
+		return VendorRepository.getVendors();
 	}
 }
