@@ -49,13 +49,17 @@ public class AdminEventView{
 		
 		GridPane grid = createGridPane();
 		TableView<Event> eventTable = createTable();
-		Label eventLabel = new Label();
-		 Button homeBtn = new Button("Home");
+		
+		Label eventLabel = new Label("Admin Event View");
+		GridPane.setHalignment(eventLabel, HPos.CENTER);
+		
+		Button homeBtn = new Button("Home");
 	        homeBtn.setOnAction(event ->{
 	        	new AdminHomeView().show(primaryStage);
 	        });
-		eventLabel.setText("Admin Event View");
-		GridPane.setHalignment(eventLabel, HPos.CENTER);
+	        
+	    
+	        
 		grid.add(eventLabel, 0, 0);
 		grid.add(eventTable, 0, 1);
 		grid.add(homeBtn, 0, 2);
@@ -72,45 +76,68 @@ public class AdminEventView{
 	     return grid;
 	}
 
-	
-
-	private TableView<Event> createTable() {
-		
+	private TableColumn<Event, Void> createActionColumn(){
 		TableColumn<Event, Void> actionCol = new TableColumn<>("Action");
-	    Callback<TableColumn<Event, Void>, TableCell<Event, Void>> cellFactory = 
-	            new Callback<TableColumn<Event, Void>, TableCell<Event, Void>>() {
-	                @Override
-	                public TableCell<Event, Void> call(final TableColumn<Event, Void> param) {
-	                    return new TableCell<Event, Void>() {
+		actionCol.setCellFactory(column -> new TableCell<Event, Void>() {
+	        private final Button deleteBtn = new Button("Delete");
 
-	                        private final Button deleteBtn = new Button("Delete");
-
-	                        {
-	                            deleteBtn.setOnAction(e -> {
-	                                Event selectedItem = getTableView().getItems().get(getIndex());
-	                                selectedItem.deleteEvent(selectedItem.getEvent_id());
-	                                tableView.getItems().remove(selectedItem);
-	                            });
-
-	                        }
+	        {
+	            // Tambahkan logika aksi tombol
+	            deleteBtn.setOnAction(e -> {
+	                Event selectedItem = getTableView().getItems().get(getIndex());
+	                if (selectedItem != null) {
+	                    selectedItem.deleteEvent(selectedItem.getEvent_id());
+	                    getTableView().getItems().remove(selectedItem);
+	                }
+	            });
+	        }
 
 	                        @Override
 	                        protected void updateItem(Void item, boolean empty) {
-	                            super.updateItem(item, empty);
-	                            if (empty) {
-	                                setGraphic(null);
+	                        	super.updateItem(item, empty);
+	                            if (empty || getIndex() >= getTableView().getItems().size()) {
+	                                setGraphic(null); // Jangan tampilkan tombol jika sel kosong
 	                            } else {
-	                                setGraphic(deleteBtn);
+	                                setGraphic(deleteBtn); // Tampilkan tombol jika sel ada data
 	                            }
 	                        }
 	                    
-	                   };
-	               }
-	    };
-	        
-		 tableView = new TableView<>();
+	                   });
+
+	    return actionCol;
+	}
+	
+	private TableColumn<Event, Void> createDetailColumn() {
+        TableColumn<Event, Void> buttonColumn = new TableColumn<>("Detail");
+        buttonColumn.setCellFactory(column -> new TableCell<Event, Void>() {
+            private final Button viewButton = new Button("View List");
+
+            {
+                viewButton.setOnAction(event -> {
+                    Event selectedEvent = getTableView().getItems().get(getIndex());
+                    if (selectedEvent != null) {
+                        new AdminEventDetailsView().show(primaryStage, selectedEvent.getEvent_id(), selectedEvent);
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(viewButton);
+                }
+            }
+        });
+        return buttonColumn;
+    }
+
+	private TableView<Event> createTable() {
+		
+		tableView = new TableView<>();
 	        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-	        actionCol.setCellFactory(cellFactory);
 	        tableView.getColumns().addAll(
 	            createColumn("Event ID", "event_id"),
 	            createColumn("Event Name", "event_name"),
@@ -118,10 +145,10 @@ public class AdminEventView{
 	            createColumn("Location", "event_location"),
 	            createColumn("Description", "event_description"),
 	            createColumn("Organizer ID", "organizer_id"),
-	            actionCol
+	            createActionColumn(), // Tambahkan kolom aksi di sini
+	            createDetailColumn()
 	        );
 	        
- 
 		    return tableView;
 	}
 	
