@@ -27,11 +27,11 @@ public class Vendor extends User{
 	}
 	
 	public static List<User> getVendorsByTransaction(String eventId){
-		return UserRepository.getVendors(eventId);
+		return VendorRepository.getVendors(eventId);
 	}
 	
 	public static List<User> getVendors(){
-		return UserRepository.getVendors();
+		return VendorRepository.getVendors();
 	}
 	
 	public static Vendor getProduct(String user_id) {

@@ -13,13 +13,17 @@ import javafx.stage.Stage;
 
 public class VendorHomeView {
 
-	public void start(Stage primaryStage) {
-		   
-        show(primaryStage);
-    }
+	private VBox root;
+    private GridPane grid;
+    private Button createEventBtn;
+    private Button viewEventBtn;
+    private Stage primaryStage;
+    private String id;
 
     public void show(Stage primaryStage) {
-
+    	this.primaryStage = primaryStage;
+        this.id = id;
+        
         VBox root = createLayout(primaryStage);
 
         Scene scene = new Scene(root, 400, 300);
@@ -34,11 +38,11 @@ public class VendorHomeView {
         
         Button viewEventBtn = new Button("View Invitation");
         viewEventBtn.setOnAction(event ->{
-        	new VendorViewInvitation().show(primaryStage);
+        	new VendorViewInvitation().show(primaryStage, id);
         });
         Button view2EventBtn = new Button("View Accepted Event");
         view2EventBtn.setOnAction(event->{
-        	new VendorViewAcceptedInvitation().show(primaryStage);
+        	new VendorViewAcceptedInvitation().show(primaryStage, id);
         });
         Button view3EventBtn = new Button("Manage Vendor");
         view3EventBtn.setOnAction(event ->{
