@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 import repository.InvitationRepository;
 
 public class Invitation {
@@ -25,6 +27,13 @@ public class Invitation {
 		return InvitationRepository.createInvitation(eventId, userId, role);
 	}
 	
+	public static String acceptInvitation(String eventId, String userId) {
+		return InvitationRepository.acceptInvitation(eventId, userId);
+	}
+	
+    public static List<Invitation> getAcceptedInvitations(String userId) {
+        return InvitationRepository.getAcceptedInvitations(userId);
+    }
 	
 	
 }

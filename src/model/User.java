@@ -63,4 +63,8 @@ public class User {
 	 public static List<User> getAllUser(){
 		 return UserRepository.getAllUser();
 	 }	
+	 
+	 public static boolean changeProfle(User user, String newPassword) {
+		 return UserRepository.updateUser(user, newPassword);
+ 	 }
 }
