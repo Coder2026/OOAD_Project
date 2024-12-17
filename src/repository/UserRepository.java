@@ -236,4 +236,28 @@ public class UserRepository {
         }
         return participants;
     }
+    
+    public static boolean updateUser(User user, String newPassword) {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        String query = "UPDATE User SET email = ?, name = ?, password = ? WHERE user_id = ?";
+        boolean updateSuccess = false;
+
+        try {
+            PreparedStatement ps = db.preparedStatement(query);
+            if (ps != null) {
+                ps.setString(1, user.getUser_email());
+                ps.setString(2, user.getUser_name());
+                ps.setString(3, newPassword);
+                ps.setString(4, user.getUser_id());
+
+                int rowsAffected = ps.executeUpdate();
+                updateSuccess = rowsAffected > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return updateSuccess;
+    }
+
 }
