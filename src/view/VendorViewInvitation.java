@@ -53,7 +53,7 @@ public class VendorViewInvitation{
 		Label eventLabel = new Label();
 		 Button homeBtn = new Button("Home");
 	        homeBtn.setOnAction(event ->{
-	        	new VendorHomeView().show(primaryStage);
+	        	new VGHomeView().show(primaryStage);
 	        });
 		eventLabel.setText("View Invitation");
 		GridPane.setHalignment(eventLabel, HPos.CENTER);

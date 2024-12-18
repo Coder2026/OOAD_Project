@@ -109,9 +109,9 @@ public class LoginView {
                 }else if(role.equalsIgnoreCase("Admin")) {
                 	new AdminHomeView().show(primaryStage);
                 }else if(role.equalsIgnoreCase("Guest")) {
-                	
+                	new VGHomeView().show(primaryStage);
                 }else if(role.equalsIgnoreCase("Vendor")) {
-                	new VendorHomeView().show(primaryStage);
+                	new VGHomeView().show(primaryStage);
                 }
             }
         });

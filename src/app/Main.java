@@ -10,7 +10,7 @@ import view.EventDetailsView;
 import view.LoginView;
 import view.ManageVendorView;
 import view.OrganizedEventView;
-import view.VendorHomeView;
+import view.VGHomeView;
 
 public class Main extends Application {
     @Override

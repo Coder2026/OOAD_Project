@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import model.User;
 import util.SessionManager;
 
-public class VendorHomeView {
+public class VGHomeView {
 
 	private VBox root;
     private GridPane grid;
