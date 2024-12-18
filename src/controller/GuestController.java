@@ -2,6 +2,7 @@ package controller;
 
 import java.util.List;
 
+import model.Event;
 import model.Invitation;
 import util.Response;
 
@@ -25,18 +26,34 @@ public class GuestController {
         }
     }
     
-    public Response<List<Invitation>> viewAcceptedInvitations(String userId) {
+    public Response<List<Event>> viewAcceptedInvitations(String email) {
         try {
-            List<Invitation> invitations = Invitation.getAcceptedInvitations(userId);
+            List<Event> events = Invitation.getAcceptedInvitations(email);
 
-            if (!invitations.isEmpty()) {
-                return Response.success("Accepted invitations retrieved successfully.", invitations);
+            if (!events.isEmpty()) {
+                return Response.success("Accepted events retrieved successfully.", events);
             } else {
-                return Response.failure("No accepted invitations found for user ID: " + userId + ".");
+                return Response.failure("No accepted events found for email: " + email + ".");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.failure("An error occurred while retrieving accepted invitations: " + e.getMessage());
+            return Response.failure("An error occurred while retrieving accepted events: " + e.getMessage());
+        }
+    }
+
+    
+    public Response<List<Event>> viewInvitations(String email) {
+        try {
+            List<Event> events = Invitation.getInvitations(email);
+
+            if (!events.isEmpty()) {
+                return Response.success("Accepted events retrieved successfully.", events);
+            } else {
+                return Response.failure("No accepted events found for email: " + email + ".");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.failure("An error occurred while retrieving accepted events: " + e.getMessage());
         }
     }
 }

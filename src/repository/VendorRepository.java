@@ -8,7 +8,6 @@ import database.DatabaseConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import database.DatabaseConnection;
 import model.User;
 import model.Vendor;
 
@@ -100,4 +99,5 @@ public class VendorRepository {
         }
         return users;
     }
+
 }
