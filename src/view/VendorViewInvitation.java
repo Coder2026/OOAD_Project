@@ -102,11 +102,9 @@ public class VendorViewInvitation{
 	            	Event selectedEvent = getTableView().getItems().get(getIndex());
 	            	if(selectedEvent != null) {
 	            		Response<String> response = controller.acceptInvitation(selectedEvent.getEvent_id(), SessionManager.getInstance().getCurrentUser().getUser_id());
+	            		getTableView().getItems().remove(selectedEvent);
 	            		if(response.isSuccess()) {
-	            			nameField.clear();
-	                        datePicker.setValue(null);
-	                        locationField.clear();
-	                        descField.clear();
+	            			
 	                        errorLabel.setVisible(false);
 	                        successLabel.setText(response.getMessage());
 	            		}

@@ -1,22 +1,37 @@
 package view;
 
+import controller.VendorController;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.Vendor;
+import util.Response;
+import util.SessionManager;
 
 public class ManageVendorView{
+	
+    private Label successLabel;
+    private Label errorLabel;
+    private GridPane grid;
+
 
 	public void start(Stage primaryStage) throws Exception {
-		
+        successLabel = createLabel(Color.GREEN);
+        errorLabel = createLabel(Color.RED);
+        grid.add(errorLabel, 1, 4);
+        grid.add(successLabel, 1, 4);
 		show(primaryStage);
+		
 	}
 
 	public void show(Stage primaryStage) {
@@ -25,7 +40,8 @@ public class ManageVendorView{
 	        Scene scene = new Scene(root, 800, 600);
 	        primaryStage.setTitle("Manage Vendor");
 	        primaryStage.setScene(scene);
-	        primaryStage.show(); 
+	        primaryStage.show();
+
 	}
 
 	private VBox createLayout(Stage primaryStage) {
@@ -55,7 +71,22 @@ public class ManageVendorView{
 	}
 	
     private void save(TextField productField, TextField descField) {
+    	String description = descField.getText();
+    	String product_name = productField.getText();
+    	
+		VendorController vc = new VendorController();
+		Response<Vendor> response = vc.manageVendor(description, product_name, SessionManager.getInstance().getCurrentUser().getUser_id());
+		System.out.println(response.getMessage());
 		
+		if(response.isSuccess()) {
+			productField.clear();
+            descField.clear();
+//            errorLabel.setVisible(false);
+//            successLabel.setText(response.getMessage());
+		}
+    	else {
+    		//errorLabel.setText(response.getMessage());
+    	}
 	}
 
 	private TextField createTextField(String prompt) {
@@ -80,4 +111,9 @@ public class ManageVendorView{
         return grid;
     }
 	
+    private Label createLabel(Color color) {
+        Label errorLabel = new Label();
+        errorLabel.setTextFill(color);
+        return errorLabel;
+    }
 }
