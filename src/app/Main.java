@@ -1,5 +1,6 @@
 package app;
 
+import controller.GuestController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import view.AdminHomeView;
@@ -26,7 +27,6 @@ public class Main extends Application {
         try {
 		loginView.show(primaryStage);
 		//view.start(primaryStage);
-          
 		} catch (Exception e) {
 			
 			e.printStackTrace();

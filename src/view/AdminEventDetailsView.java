@@ -118,7 +118,7 @@ public class AdminEventDetailsView {
         tableView.setPrefHeight(200);
 
         TableColumn<User, String> guestColumn = new TableColumn<>("Guest Name");
-        guestColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        guestColumn.setCellValueFactory(new PropertyValueFactory<>("user_name"));
         guestColumn.setCellFactory(column -> new TableCell<User, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -133,7 +133,7 @@ public class AdminEventDetailsView {
         guestColumn.setMinWidth(100);
 
         TableColumn<User, String> vendorColumn = new TableColumn<>("Vendor Name");
-        vendorColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        vendorColumn.setCellValueFactory(new PropertyValueFactory<>("user_name"));
         vendorColumn.setCellFactory(column -> new TableCell<User, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
