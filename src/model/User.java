@@ -99,14 +99,11 @@ public class User {
 		 return UserRepository.getAllUser();
 	 }
 	 
+	 public static boolean changeProfle(User user, String newPassword) {
+		 return UserRepository.updateUser(user, newPassword);
+ 	 }
+
 	 public static String deleteUser(String userId) {
 		return UserRepository.deleteUser(userId);
-	}
-
-
-
-	public static boolean changeProfle(User user, String newPassword) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
