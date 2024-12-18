@@ -50,8 +50,8 @@ public class CreateEventView {
         locationField = createTextField("Enter Event Location");
         descField = createTextField("Enter Event Description");
         datePicker = new DatePicker();
-        successLabel = createErrorLabel(Color.GREEN);
-        errorLabel = createErrorLabel(Color.RED);
+        successLabel = createLabel(Color.GREEN);
+        errorLabel = createLabel(Color.RED);
         submitButton = createSubmitButton();
         homeButton = createHomeButton();
 
@@ -126,7 +126,7 @@ public class CreateEventView {
         return textField;
     }
 
-    private Label createErrorLabel(Color color) {
+    private Label createLabel(Color color) {
         Label errorLabel = new Label();
         errorLabel.setTextFill(color);
         return errorLabel;

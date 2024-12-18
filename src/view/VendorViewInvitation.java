@@ -67,7 +67,7 @@ public class VendorViewInvitation{
 		
 		Button homeBtn = new Button("Home");
 	        homeBtn.setOnAction(event ->{
-	        	new VendorHomeView().show(primaryStage);
+	        	new VGHomeView().show(primaryStage);
 	        });
 		
 		grid.add(eventLabel, 0, 0);
