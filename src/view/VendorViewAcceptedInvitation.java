@@ -29,6 +29,7 @@ import model.Event;
 import model.Invitation;
 import model.User;
 import util.Response;
+import util.SessionManager;
 
 public class VendorViewAcceptedInvitation{
 
@@ -126,7 +127,7 @@ public class VendorViewAcceptedInvitation{
 	            createColumn("Event Date", "event_date"),
 	            createColumn("Event Location", "event_location"),
 	            createColumn("Event Description", "event_description"),
-	            createColumn("Event Organizer", "event_organizer"),
+	            createColumn("Event Organizer", "organizer_id"),
 	            createDetailColumn()
 	        );
 
@@ -141,11 +142,11 @@ public class VendorViewAcceptedInvitation{
 	
 	public void loadData(String eventId) {
         VendorController controller = new VendorController();
-        Response<List<Invitation>> response = controller.viewAcceptedInvitations(id);
+        Response<List<Event>> response = controller.viewAcceptedInvitations(SessionManager.getInstance().getCurrentUser().getUser_email());
 
         if (response.isSuccess()) {
-            //ObservableList<Invitation> eventData = FXCollections.observableArrayList(response.getData());
-            //tableView.setItems(eventData);
+            ObservableList<Event> eventData = FXCollections.observableArrayList(response.getData());
+            tableView.setItems(eventData);
 
         }
     }

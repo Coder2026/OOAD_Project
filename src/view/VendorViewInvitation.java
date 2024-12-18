@@ -29,6 +29,7 @@ import model.Event;
 import model.Invitation;
 import model.User;
 import util.Response;
+import util.SessionManager;
 
 public class VendorViewInvitation{
 
@@ -100,7 +101,7 @@ public class VendorViewInvitation{
 	            acceptBtn.setOnAction(e -> {
 	            	Event selectedEvent = getTableView().getItems().get(getIndex());
 	            	if(selectedEvent != null) {
-	            		Response<String> response = controller.acceptInvitation(selectedEvent.getEvent_id(), id);
+	            		Response<String> response = controller.acceptInvitation(selectedEvent.getEvent_id(), SessionManager.getInstance().getCurrentUser().getUser_id());
 	            		if(response.isSuccess()) {
 	            			nameField.clear();
 	                        datePicker.setValue(null);
@@ -160,11 +161,11 @@ public class VendorViewInvitation{
 	
 	public void loadData(String eventId) {
         VendorController controller = new VendorController();
-        Response<List<Invitation>> response = controller.viewAcceptedInvitations(id);
+        Response<List<Event>> response = controller.viewInvitations(SessionManager.getInstance().getCurrentUser().getUser_email());
 
         if (response.isSuccess()) {
-            //ObservableList<Event> eventData = FXCollections.observableArrayList(response.getData());
-            //tableView.setItems(eventData);
+            ObservableList<Event> eventData = FXCollections.observableArrayList(response.getData());
+            tableView.setItems(eventData);
 
         }
     }

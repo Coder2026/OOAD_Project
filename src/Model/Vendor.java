@@ -31,6 +31,9 @@ public class Vendor extends User{
 	}
 	
 	public static List<User> getVendors(){
+		for (User user : VendorRepository.getVendors()) {
+			System.out.println(user.getUser_name());
+		}
 		return VendorRepository.getVendors();
 	}
 	
