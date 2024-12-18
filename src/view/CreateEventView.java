@@ -82,10 +82,11 @@ public class CreateEventView {
             String formattedDate = "";
             if (date != null) {
                 formattedDate = formatter.format(date);
-            } else {
-                errorLabel.setText("Please select a date");
-                return;
-            }
+            } 
+//            else {
+//                errorLabel.setText("Please select a date");
+//                return;
+//            }
             String location = locationField.getText();
             String description = descField.getText();
 

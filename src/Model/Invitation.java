@@ -31,9 +31,12 @@ public class Invitation {
 		return InvitationRepository.acceptInvitation(eventId, userId);
 	}
 	
-    public static List<Invitation> getAcceptedInvitations(String userId) {
-        return InvitationRepository.getAcceptedInvitations(userId);
+    public static List<Event> getAcceptedInvitations(String email) {
+        return InvitationRepository.getAcceptedInvitations(email);
     }
 	
+    public static List<Event> getInvitations(String email) {
+        return InvitationRepository.getInvitations(email);
+    }
 	
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database.DatabaseConnection;
+import model.Event;
 import model.Invitation;
 import model.User;
 
@@ -81,32 +82,70 @@ public class InvitationRepository {
         return null;
     }
     
-    public static List<Invitation> getAcceptedInvitations(String userId) {
+    public static List<Event> getAcceptedInvitations(String email) {
         DatabaseConnection db = DatabaseConnection.getInstance();
-        List<Invitation> invitations = new ArrayList<>();
-        String query = "SELECT * FROM Invitation WHERE user_id = ? AND status = 'Accepted'";
+        List<Event> events = new ArrayList<>();
+        String query = "SELECT e.event_id, e.name, e.date, e.location, e.description, e.organizer_id " +
+                       "FROM Invitation i " +
+                       "JOIN User u ON i.user_id = u.user_id " +
+                       "JOIN Event e ON i.event_id = e.event_id " +
+                       "WHERE u.email = ? AND i.status = 'Accepted'";
         
         try {
             PreparedStatement ps = db.preparedStatement(query);
             if (ps != null) {
-                ps.setString(1, userId);
+                ps.setString(1, email);
 
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    Invitation invitation = new Invitation(
-                    	rs.getString("invitation_id"),
+                    Event event = new Event(
                         rs.getString("event_id"),
-                        rs.getString("user_id"),
-                        rs.getString("status"),
-                        rs.getString("role")
+                        rs.getString("name"),
+                        rs.getString("date"),
+                        rs.getString("location"),
+                        rs.getString("description"),
+                        rs.getString("organizer_id")
                     );
-                    invitations.add(invitation);
+                    events.add(event);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return invitations;
+        return events;
+    }
+    
+    public static List<Event> getInvitations(String email) {
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        List<Event> events = new ArrayList<>();
+        String query = "SELECT e.event_id, e.name, e.date, e.location, e.description, e.organizer_id " +
+                "FROM Invitation i " +
+                "JOIN User u ON i.user_id = u.user_id " +
+                "JOIN Event e ON i.event_id = e.event_id " +
+                "WHERE u.email = ? AND i.status = 'Pending'";
+        
+        try {
+            PreparedStatement ps = db.preparedStatement(query);
+            if (ps != null) {
+                ps.setString(1, email);
+
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Event event = new Event(
+                            rs.getString("event_id"),
+                            rs.getString("name"),
+                            rs.getString("date"),
+                            rs.getString("location"),
+                            rs.getString("description"),
+                            rs.getString("organizer_id")
+                    );
+                    events.add(event);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return events;
     }
     
     

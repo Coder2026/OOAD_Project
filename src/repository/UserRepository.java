@@ -15,39 +15,39 @@ public class UserRepository {
 
 	public static String createUser(String email, String name, String password, String role) {
 	    DatabaseConnection db = DatabaseConnection.getInstance();
-
 	    String checkQuery = "SELECT * FROM User WHERE email = ? OR name = ?";
 
-	    try {
-	        PreparedStatement ps = db.preparedStatement(checkQuery);
+	    try (PreparedStatement ps = db.preparedStatement(checkQuery)) {
 	        if (ps != null) {
 	            ps.setString(1, email);
 	            ps.setString(2, name);
 
-	            ResultSet rs = ps.executeQuery();
-	            if (rs.next()) { 
-	                if (rs.getString("email").equals(email)) {
-	                    return "Email is already registered!";
-	                }
-	                if (rs.getString("name").equals(name)) {
-	                    return "Name is already registered!";
+	            try (ResultSet rs = ps.executeQuery()) {
+	                if (rs.next()) {
+	                    if (rs.getString("email").equals(email)) {
+	                        return "Email is already registered!";
+	                    }
+	                    if (rs.getString("name").equals(name)) {
+	                        return "Name is already registered!";
+	                    }
 	                }
 	            }
 	        }
 
 	        String insertQuery = "INSERT INTO User (email, name, password, role) VALUES (?, ?, ?, ?)";
-	        PreparedStatement insertPs = db.preparedStatement(insertQuery);
-	        if (insertPs != null) {
-	            insertPs.setString(1, email);
-	            insertPs.setString(2, name);
-	            insertPs.setString(3, password);
-	            insertPs.setString(4, role);
+	        try (PreparedStatement insertPs = db.preparedStatement(insertQuery)) {
+	            if (insertPs != null) {
+	                insertPs.setString(1, email);
+	                insertPs.setString(2, name);
+	                insertPs.setString(3, password);
+	                insertPs.setString(4, role);
 
-	            int rowsAffected = insertPs.executeUpdate();
-	            if (rowsAffected > 0) {
-	                return "success";
-	            } else {
-	                return "Failed to create user.";
+	                int rowsAffected = insertPs.executeUpdate();
+	                if (rowsAffected > 0) {
+	                    return "success";
+	                } else {
+	                    return "Failed to create user.";
+	                }
 	            }
 	        }
 	    } catch (SQLException e) {
@@ -56,6 +56,7 @@ public class UserRepository {
 	    }
 	    return null;
 	}
+
 
     public static User getUserIdByEmailAndPassword(String email, String password) {
         DatabaseConnection db = DatabaseConnection.getInstance();

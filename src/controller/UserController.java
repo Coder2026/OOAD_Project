@@ -8,7 +8,7 @@ public class UserController {
 
 	public Response<String> register(String email, String name, String password, String role) {
 		
-	    String checkInput = checkRegisterInput(email,name,password);
+	    String checkInput = checkRegisterInput(email,name,password,role);
 	    if (!checkInput.equals("valid")) {
 	        return Response.failure(checkInput);
 	    }
@@ -71,7 +71,7 @@ public class UserController {
         }
     }
     
-    public String checkRegisterInput(String email, String name, String password) {
+    public String checkRegisterInput(String email, String name, String password, String role) {
         
         if (email.isEmpty()) {
             return "Email cannot be empty!";
@@ -88,6 +88,10 @@ public class UserController {
         
         if (password.length() < 5) {
             return "Password must be at least 5 characters!";
+        }
+        
+        if(role == null) {
+        	return "Role must be choosed";
         }
         
         return "valid";
