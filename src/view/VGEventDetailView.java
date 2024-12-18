@@ -24,13 +24,15 @@ import model.Guest;
 import model.User;
 import model.Vendor;
 import util.Response;
+import util.SessionManager;
 
-public class VendorEventDetailView {
+public class VGEventDetailView {
 	  private TableView<User> tableView;
 	    private VBox root;
 	    private Stage primaryStage;
 	    private String eventId;
 	    private Event selectedEvent;
+	    private String role = SessionManager.getInstance().getCurrentUser().getUser_role();
 
 	    public void show(Stage primaryStage, String eventId, Event selectedEvent) {
 	        this.primaryStage = primaryStage;
@@ -91,7 +93,7 @@ public class VendorEventDetailView {
 
 	    private Button createBackButton() {
 	        Button backButton = new Button("Back");
-	        backButton.setOnAction(event -> new VendorViewAcceptedInvitation().show(primaryStage, eventId));
+	        backButton.setOnAction(event -> new VGViewAcceptedInvitation().show(primaryStage));
 	        return backButton;
 	    }
 
@@ -118,7 +120,7 @@ public class VendorEventDetailView {
 	        tableView.setPrefHeight(200);
 
 	        TableColumn<User, String> guestColumn = new TableColumn<>("Guest Name");
-	        guestColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
+	        guestColumn.setCellValueFactory(new PropertyValueFactory<>("user_name"));
 	        guestColumn.setCellFactory(column -> new TableCell<User, String>() {
 	            @Override
 	            protected void updateItem(String item, boolean empty) {
@@ -133,7 +135,7 @@ public class VendorEventDetailView {
 	        guestColumn.setMinWidth(100);
 
 	        TableColumn<User, String> vendorColumn = new TableColumn<>("Vendor Name");
-	        vendorColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
+	        vendorColumn.setCellValueFactory(new PropertyValueFactory<>("user_name"));
 	        vendorColumn.setCellFactory(column -> new TableCell<User, String>() {
 	            @Override
 	            protected void updateItem(String item, boolean empty) {
