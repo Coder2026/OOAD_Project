@@ -31,7 +31,7 @@ import model.User;
 import util.Response;
 import util.SessionManager;
 
-public class VendorViewInvitation{
+public class VGViewInvitation{
 
 	private TableView<Event> tableView;
     private Stage primaryStage;
@@ -43,11 +43,11 @@ public class VendorViewInvitation{
     private DatePicker datePicker;
     private TextField locationField;
     private TextField descField;
+    private String role = SessionManager.getInstance().getCurrentUser().getUser_role();
 
-	public void show(Stage primaryStage, String id) {
+	public void show(Stage primaryStage) {
 		// TODO Auto-generated method stub
 		this.primaryStage = primaryStage;
-        this.id = id;
 		
 		VBox root = createLayout(primaryStage);
 		Scene scene = new Scene (root, 1200, 800);
@@ -55,7 +55,7 @@ public class VendorViewInvitation{
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		loadData(id);
+		loadData();
 	}
 
 	private VBox createLayout(Stage primaryStage) {
@@ -97,7 +97,7 @@ public class VendorViewInvitation{
 	        private final Button acceptBtn = new Button("Accept");
 
 	        {
-	            // Tambahkan logika aksi tombol
+	
 	            acceptBtn.setOnAction(e -> {
 	            	Event selectedEvent = getTableView().getItems().get(getIndex());
 	            	if(selectedEvent != null) {
@@ -120,9 +120,9 @@ public class VendorViewInvitation{
 	                        protected void updateItem(Void item, boolean empty) {
 	                        	super.updateItem(item, empty);
 	                            if (empty || getIndex() >= getTableView().getItems().size()) {
-	                                setGraphic(null); // Jangan tampilkan tombol jika sel kosong
+	                                setGraphic(null); 
 	                            } else {
-	                                setGraphic(acceptBtn); // Tampilkan tombol jika sel ada data
+	                                setGraphic(acceptBtn);
 	                            }
 	                        }
 	                    
@@ -144,7 +144,7 @@ public class VendorViewInvitation{
             createColumn("Location", "event_location"),
             createColumn("Description", "event_description"),
             createColumn("Organizer ID", "organizer_id"),
-            createAcceptColumn() // Tambahkan kolom aksi di sini
+            createAcceptColumn() 
             
         );
         
@@ -157,7 +157,8 @@ public class VendorViewInvitation{
         return column;
     }
 	
-	public void loadData(String eventId) {
+	public void loadData() {
+		if(role.equalsIgnoreCase("vendor")) {
         VendorController controller = new VendorController();
         Response<List<Event>> response = controller.viewInvitations(SessionManager.getInstance().getCurrentUser().getUser_email());
 
@@ -166,6 +167,17 @@ public class VendorViewInvitation{
             tableView.setItems(eventData);
 
         }
+		}
+		else if(role.equalsIgnoreCase("Guest")) {
+	        VendorController controller = new VendorController();
+	        Response<List<Event>> response = controller.viewInvitations(SessionManager.getInstance().getCurrentUser().getUser_email());
+
+	        if (response.isSuccess()) {
+	            ObservableList<Event> eventData = FXCollections.observableArrayList(response.getData());
+	            tableView.setItems(eventData);
+
+	        }
+		}
     }
 	
 	private Label createErrorLabel(Color color) {

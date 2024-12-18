@@ -41,11 +41,11 @@ public class VGHomeView {
         
         Button viewEventBtn = new Button("View Invitation");
         viewEventBtn.setOnAction(event ->{
-        	new VendorViewInvitation().show(primaryStage, id);
+        	new VGViewInvitation().show(primaryStage);
         });
         Button view2EventBtn = new Button("View Accepted Event");
         view2EventBtn.setOnAction(event->{
-        	new VendorViewAcceptedInvitation().show(primaryStage, id);
+        	new VGViewAcceptedInvitation().show(primaryStage);
         });
         Button changePrflBtn = new Button("Change Profile");
         changePrflBtn.setOnAction(event -> {

@@ -4,6 +4,7 @@ package view;
 import java.util.List;
 
 import controller.AdminController;
+import controller.GuestController;
 import controller.VendorController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -31,7 +32,7 @@ import model.User;
 import util.Response;
 import util.SessionManager;
 
-public class VendorViewAcceptedInvitation{
+public class VGViewAcceptedInvitation{
 
 	private TableView<Event> tableView;
 	private Stage primaryStage;
@@ -43,19 +44,20 @@ public class VendorViewAcceptedInvitation{
     private DatePicker datePicker;
     private TextField locationField;
     private TextField descField;
+    private String role = SessionManager.getInstance().getCurrentUser().getUser_role();
 
-	public void show(Stage primaryStage, String Id) {
+	public void show(Stage primaryStage) {
 		// TODO Auto-generated method stub
 		this.primaryStage = primaryStage;
-		this.id = id;
+	
 		
 		VBox root = createLayout(primaryStage);
 		Scene scene = new Scene (root, 1200, 800);
-		primaryStage.setTitle("View Accepted Events");
+		primaryStage.setTitle("View Accepted Events" + role);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		loadData(Id);
+		loadData();
 	}
 
 	private VBox createLayout(Stage primaryStage) {
@@ -99,7 +101,7 @@ public class VendorViewAcceptedInvitation{
                 viewButton.setOnAction(event -> {
                     Event selectedEvent = getTableView().getItems().get(getIndex());
                     if (selectedEvent != null) {
-                        new VendorEventDetailView().show(primaryStage, selectedEvent.getEvent_id(), selectedEvent);
+                        new VGEventDetailView().show(primaryStage, selectedEvent.getEvent_id(), selectedEvent);
                     }
                 });
             }
@@ -140,15 +142,35 @@ public class VendorViewAcceptedInvitation{
         return column;
     }
 	
-	public void loadData(String eventId) {
-        VendorController controller = new VendorController();
-        Response<List<Event>> response = controller.viewAcceptedInvitations(SessionManager.getInstance().getCurrentUser().getUser_email());
+	public void loadData() {
+		if(role.equalsIgnoreCase("vendor")) {
+			
+			
+			VendorController controller = new VendorController();
+			
+			 Response<List<Event>> response = controller.viewAcceptedInvitations(SessionManager.getInstance().getCurrentUser().getUser_email());
 
-        if (response.isSuccess()) {
-            ObservableList<Event> eventData = FXCollections.observableArrayList(response.getData());
-            tableView.setItems(eventData);
+		        if (response.isSuccess()) {
+		            ObservableList<Event> eventData = FXCollections.observableArrayList(response.getData());
+		            tableView.setItems(eventData);
 
-        }
+		        }
+		        
+		}
+		else if(role.equalsIgnoreCase("guest")) {
+			
+			 GuestController controller = new GuestController();
+			 
+			 Response<List<Event>> response = controller.viewAcceptedInvitations(SessionManager.getInstance().getCurrentUser().getUser_email());
+
+		        if (response.isSuccess()) {
+		            ObservableList<Event> eventData = FXCollections.observableArrayList(response.getData());
+		            tableView.setItems(eventData);
+
+		        }
+		}
+ 
+   
     }
 	
 	private Label createErrorLabel(Color color) {
