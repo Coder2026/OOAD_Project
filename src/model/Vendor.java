@@ -10,8 +10,6 @@ public class Vendor extends User{
 	private String accepted_invitations;
 	private String product_name;
 	private String product_desc;
-	
-	
 
 	public Vendor(String user_id, String user_email, String user_name, String user_password, String user_role,
 			String accepted_invitations, String product_name, String product_desc) {
@@ -31,6 +29,9 @@ public class Vendor extends User{
 	}
 	
 	public static List<User> getVendors(){
+		for (User user : VendorRepository.getVendors()) {
+			System.out.println(user.getUser_name());
+		}
 		return VendorRepository.getVendors();
 	}
 	

@@ -96,9 +96,9 @@ public class AdminEventView{
 	                        protected void updateItem(Void item, boolean empty) {
 	                        	super.updateItem(item, empty);
 	                            if (empty || getIndex() >= getTableView().getItems().size()) {
-	                                setGraphic(null); // Jangan tampilkan tombol jika sel kosong
+	                                setGraphic(null); 
 	                            } else {
-	                                setGraphic(deleteBtn); // Tampilkan tombol jika sel ada data
+	                                setGraphic(deleteBtn); 
 	                            }
 	                        }
 	                    

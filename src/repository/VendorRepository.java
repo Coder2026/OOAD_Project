@@ -48,6 +48,7 @@ public class VendorRepository {
 //	    return null;
 		return null;
 	}
+	
     public static List<User> getVendors(String eventId) {
         DatabaseConnection db = DatabaseConnection.getInstance();
         List<User> participants = new ArrayList<>();
@@ -97,6 +98,7 @@ public class VendorRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
         return users;
     }
 

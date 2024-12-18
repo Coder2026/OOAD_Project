@@ -12,18 +12,24 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Event;
+import model.Invitation;
+import model.User;
 import util.Response;
+import util.SessionManager;
 
 public class VendorViewInvitation{
 
@@ -31,6 +37,12 @@ public class VendorViewInvitation{
     private Stage primaryStage;
     private String id;
     private VBox root;
+    private Label successLabel;
+    private Label errorLabel;
+    private TextField nameField;
+    private DatePicker datePicker;
+    private TextField locationField;
+    private TextField descField;
 
 	public void show(Stage primaryStage, String id) {
 		// TODO Auto-generated method stub
@@ -50,13 +62,15 @@ public class VendorViewInvitation{
 		// TODO Auto-generated method stub
 		GridPane grid = createGridPane();
 		TableView<Event> eventTable = createTable();
-		Label eventLabel = new Label();
-		 Button homeBtn = new Button("Home");
+		
+		Label eventLabel = new Label("View Invitation");
+		GridPane.setHalignment(eventLabel, HPos.CENTER);
+		
+		Button homeBtn = new Button("Home");
 	        homeBtn.setOnAction(event ->{
 	        	new VGHomeView().show(primaryStage);
 	        });
-		eventLabel.setText("View Invitation");
-		GridPane.setHalignment(eventLabel, HPos.CENTER);
+		
 		grid.add(eventLabel, 0, 0);
 		grid.add(eventTable, 0, 1);
 		grid.add(homeBtn, 0, 2);
@@ -73,89 +87,68 @@ public class VendorViewInvitation{
 	     return grid;
 	}
 
+	private TableColumn<Event, Void> createAcceptColumn(){
+		successLabel = createErrorLabel(Color.GREEN);
+        errorLabel = createErrorLabel(Color.RED);
+        
+		VendorController controller = new VendorController();
+		TableColumn<Event, Void> acceptCol = new TableColumn<>("Accept");
+		acceptCol.setCellFactory(column -> new TableCell<Event, Void>() {
+	        private final Button acceptBtn = new Button("Accept");
+
+	        {
+	            // Tambahkan logika aksi tombol
+	            acceptBtn.setOnAction(e -> {
+	            	Event selectedEvent = getTableView().getItems().get(getIndex());
+	            	if(selectedEvent != null) {
+	            		Response<String> response = controller.acceptInvitation(selectedEvent.getEvent_id(), SessionManager.getInstance().getCurrentUser().getUser_id());
+	            		getTableView().getItems().remove(selectedEvent);
+	            		if(response.isSuccess()) {
+	            			
+	                        errorLabel.setVisible(false);
+	                        successLabel.setText(response.getMessage());
+	            		}
+	            		else {
+	            			errorLabel.setText(response.getMessage());
+	            		}
+	            	}
+	                
+	            });
+	        }
+
+	                        @Override
+	                        protected void updateItem(Void item, boolean empty) {
+	                        	super.updateItem(item, empty);
+	                            if (empty || getIndex() >= getTableView().getItems().size()) {
+	                                setGraphic(null); // Jangan tampilkan tombol jika sel kosong
+	                            } else {
+	                                setGraphic(acceptBtn); // Tampilkan tombol jika sel ada data
+	                            }
+	                        }
+	                    
+	                   });
+
+	    return acceptCol;
+	}
+	
 	
 
 	private TableView<Event> createTable() {
 	        
-		 TableView<Event> tableView = new TableView<>();
-		    
-		    TableColumn<Event, Void> action1Col = new TableColumn<>("Accept");
-		    Callback<TableColumn<Event, Void>, TableCell<Event, Void>> cellFactory = 
-		            new Callback<TableColumn<Event, Void>, TableCell<Event, Void>>() {
-		                @Override
-		                public TableCell<Event, Void> call(final TableColumn<Event, Void> param) {
-		                    return new TableCell<Event, Void>() {
-
-		                        private final Button acceptBtn = new Button("Accept");
-
-		                        {
-		                            acceptBtn.setOnAction(e -> {
-		                                Event selectedItem = getTableView().getItems().get(getIndex());
-		                                
-		                            });
-		                        }
-
-		                        @Override
-		                        protected void updateItem(Void item, boolean empty) {
-		                            super.updateItem(item, empty);
-		                            if (empty) {
-		                                setGraphic(null);
-		                            } else {
-		                                setGraphic(acceptBtn);
-		                            }
-		                        }
-		                    
-		                   };
-		               }
-		    };
-		    
-		    TableColumn<Event, Void> action2Col = new TableColumn<>("Decline");
-		    Callback<TableColumn<Event, Void>, TableCell<Event, Void>> cellFactory2 = 
-		            new Callback<TableColumn<Event, Void>, TableCell<Event, Void>>() {
-		                @Override
-		                public TableCell<Event, Void> call(final TableColumn<Event, Void> param) {
-		                    return new TableCell<Event, Void>() {
-
-		                        private final Button declineBtn = new Button("Decline");
-
-		                        {
-		                            declineBtn.setOnAction(e -> {
-		                                Event selectedItem = getTableView().getItems().get(getIndex());
-		                                
-		                            });
-		                        }
-
-		                        @Override
-		                        protected void updateItem(Void item, boolean empty) {
-		                            super.updateItem(item, empty);
-		                            if (empty) {
-		                                setGraphic(null);
-		                            } else {
-		                                setGraphic(declineBtn);
-		                            }
-		                        }
-		                    
-		                   };
-		               }
-		    };
-
-		    tableView = new TableView<>();
-	        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-	        action1Col.setCellFactory(cellFactory);
-	        action2Col.setCellFactory(cellFactory);
-	        
-	        tableView.getColumns().addAll(
-	            createColumn("Event ID", "event_id"),
-	            createColumn("Event Name", "event_name"),
-	            createColumn("Event Date", "event_date"),
-	            createColumn("Location", "event_location"),
-	            createColumn("Description", "event_description"),
-	            createColumn("Organizer ID", "organizer_id"),
-	            action1Col,
-	            action2Col
-	        );
-	        
-		    return tableView;
+		tableView = new TableView<>();
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableView.getColumns().addAll(
+            createColumn("Event ID", "event_id"),
+            createColumn("Event Name", "event_name"),
+            createColumn("Event Date", "event_date"),
+            createColumn("Location", "event_location"),
+            createColumn("Description", "event_description"),
+            createColumn("Organizer ID", "organizer_id"),
+            createAcceptColumn() // Tambahkan kolom aksi di sini
+            
+        );
+        
+	    return tableView;
 	}
 
 	private TableColumn<Event, String> createColumn(String header, String property) {
@@ -166,15 +159,19 @@ public class VendorViewInvitation{
 	
 	public void loadData(String eventId) {
         VendorController controller = new VendorController();
-        //Response<List<User>> response = controller.getAllInvitedEvent(eventId);
+        Response<List<Event>> response = controller.viewInvitations(SessionManager.getInstance().getCurrentUser().getUser_email());
 
-//        if (response.isSuccess()) {
-//            ObservableList<User> eventData = FXCollections.observableArrayList(response.getData());
-//            //tableView.setItems(eventData);
-//
-//        }
+        if (response.isSuccess()) {
+            ObservableList<Event> eventData = FXCollections.observableArrayList(response.getData());
+            tableView.setItems(eventData);
+
+        }
     }
 	
-	
+	private Label createErrorLabel(Color color) {
+        Label errorLabel = new Label();
+        errorLabel.setTextFill(color);
+        return errorLabel;
+    }
 	
 }

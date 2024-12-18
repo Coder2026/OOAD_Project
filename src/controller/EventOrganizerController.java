@@ -57,7 +57,8 @@ public class EventOrganizerController {
 	public Response<List<User>> getVendors() {
 	    List<User> vendors = Vendor.getVendors();
 
-	    if (vendors != null && vendors.isEmpty()) {
+	    if (vendors != null && !vendors.isEmpty()) {
+	    	
 	        return Response.success("Vendors fetched successfully.", vendors);
 	    }
 	    return Response.failure("No users found or fetch operation failed.");

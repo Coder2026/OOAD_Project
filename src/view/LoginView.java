@@ -107,11 +107,13 @@ public class LoginView {
                 if(role.equalsIgnoreCase("eventOrganizer")) {
                     new EOHomeView().show(primaryStage, currentUser.getUser_id());
                 }else if(role.equalsIgnoreCase("Admin")) {
-                	new AdminHomeView().show(primaryStage);
+                	//new AdminHomeView().show(primaryStage), currentUser.getUser_id());
                 }else if(role.equalsIgnoreCase("Guest")) {
                 	new VGHomeView().show(primaryStage);
+                	//new EOHomeView().show(primaryStage, currentUser.getUser_id());
                 }else if(role.equalsIgnoreCase("Vendor")) {
                 	new VGHomeView().show(primaryStage);
+
                 }
             }
         });
