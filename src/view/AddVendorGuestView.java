@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.User;
 import util.Response;
+import util.SessionManager;
 
 public class AddVendorGuestView {
 
@@ -25,7 +26,8 @@ public class AddVendorGuestView {
     private Stage primaryStage;
     private String listType;
     private String eventId;
-
+    private String id = SessionManager.getInstance().getCurrentUser().getUser_id();
+    
     public void show(Stage primaryStage, String listType, String eventId) {
         this.primaryStage = primaryStage;
         this.listType = listType;
@@ -46,7 +48,7 @@ public class AddVendorGuestView {
         ListView<CheckBox> listView = listType.equalsIgnoreCase("Vendors") ? getVendor() : getGuest();
 
         Button backButton = new Button("Back");
-        backButton.setOnAction(event -> primaryStage.close());
+        backButton.setOnAction(event -> new EOHomeView().show(primaryStage, id));
 
         Button addButton = new Button("Add");
         addButton.setOnAction(event -> add(listView, successLabel, errorLabel));

@@ -53,7 +53,7 @@ public class VendorViewAcceptedInvitation{
 		Label eventLabel = new Label();
 		 Button homeBtn = new Button("Home");
 	        homeBtn.setOnAction(event ->{
-	        	new VendorHomeView().show(primaryStage);
+	        	new VGHomeView().show(primaryStage);
 	        });
 		eventLabel.setText("View Accepted Events");
 		GridPane.setHalignment(eventLabel, HPos.CENTER);

@@ -42,7 +42,7 @@ public class ManageVendorView{
 	        });
 	        Button backButton = new Button("Home");
 	        backButton.setOnAction(event -> {
-	        	new VendorHomeView().show(primaryStage);
+	        	new VGHomeView().show(primaryStage);
 	        });
 	        HBox buttonBox = createLabelValueBox(backButton, saveButton);
 	      
