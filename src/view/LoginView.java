@@ -111,7 +111,7 @@ public class LoginView {
                 }else if(role.equalsIgnoreCase("Guest")) {
                 	
                 }else if(role.equalsIgnoreCase("Vendor")) {
-                	
+                	new VendorHomeView().show(primaryStage);
                 }
             }
         });

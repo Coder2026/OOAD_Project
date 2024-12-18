@@ -31,6 +31,7 @@ public class AdminEventDetailsView {
     private Event selectedEvent;
 
     public void show(Stage primaryStage, String eventId, Event selectedEvent) {
+    	
         this.primaryStage = primaryStage;
         this.eventId = eventId;
         this.selectedEvent = selectedEvent;
@@ -42,6 +43,7 @@ public class AdminEventDetailsView {
         primaryStage.show();
 
         fetchEventDetails(eventId);
+        
     }
 
     private void init() {

@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.User;
+import util.SessionManager;
 
 public class VendorHomeView {
 
@@ -19,15 +21,16 @@ public class VendorHomeView {
     private Button viewEventBtn;
     private Stage primaryStage;
     private String id;
-
+    private String role = SessionManager.getInstance().getCurrentUser().getUser_role();
+    
     public void show(Stage primaryStage) {
     	this.primaryStage = primaryStage;
-        this.id = id;
+    
         
         VBox root = createLayout(primaryStage);
 
         Scene scene = new Scene(root, 400, 300);
-        primaryStage.setTitle("Home");
+        primaryStage.setTitle("Home" + role);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -44,13 +47,16 @@ public class VendorHomeView {
         view2EventBtn.setOnAction(event->{
         	new VendorViewAcceptedInvitation().show(primaryStage, id);
         });
-        Button view3EventBtn = new Button("Manage Vendor");
-        view3EventBtn.setOnAction(event ->{
-        	new ManageVendorView().show(primaryStage);
-        });
+        if (role.equalsIgnoreCase("Vendor")) {
+            Button manageVendorBtn = new Button("Manage Vendor");
+            manageVendorBtn.setOnAction(event -> {
+                new ManageVendorView().show(primaryStage);
+            });
+            grid.add(manageVendorBtn, 2, 0);
+        }
         grid.add(viewEventBtn, 0, 0);
         grid.add(view2EventBtn, 1, 0);
-        grid.add(view3EventBtn, 2, 0);
+        
      
         VBox vbox = new VBox(grid);
         vbox.setAlignment(Pos.CENTER);

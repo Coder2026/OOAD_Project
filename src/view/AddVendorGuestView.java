@@ -46,7 +46,7 @@ public class AddVendorGuestView {
         ListView<CheckBox> listView = listType.equalsIgnoreCase("Vendors") ? getVendor() : getGuest();
 
         Button backButton = new Button("Back");
-        backButton.setOnAction(event -> primaryStage.close());
+        backButton.setOnAction(event -> new EOHomeView().show(primaryStage, eventId));
 
         Button addButton = new Button("Add");
         addButton.setOnAction(event -> add(listView, successLabel, errorLabel));
