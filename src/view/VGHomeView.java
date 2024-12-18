@@ -47,6 +47,10 @@ public class VGHomeView {
         view2EventBtn.setOnAction(event->{
         	new VendorViewAcceptedInvitation().show(primaryStage, id);
         });
+        Button changePrflBtn = new Button("Change Profile");
+        changePrflBtn.setOnAction(event -> {
+            new ChangeProfileView().show(primaryStage);
+        });
         if (role.equalsIgnoreCase("Vendor")) {
             Button manageVendorBtn = new Button("Manage Vendor");
             manageVendorBtn.setOnAction(event -> {
@@ -56,7 +60,7 @@ public class VGHomeView {
         }
         grid.add(viewEventBtn, 0, 0);
         grid.add(view2EventBtn, 1, 0);
-        
+        grid.add(changePrflBtn, 0, 1);
      
         VBox vbox = new VBox(grid);
         vbox.setAlignment(Pos.CENTER);

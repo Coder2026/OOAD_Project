@@ -53,22 +53,20 @@ public class UserController {
             return Response.failure(checkInput);
         }
 
-        User user = User.login(email, oldPassword);
+       // User user = User.login(email, oldPassword);
+        User user = SessionManager.getInstance().getCurrentUser();
         if (user != null) {
             user.setUser_name(name);
             user.setUser_email(email);
 
         
-            boolean updateSuccess = User.changeProfle(user, newPassword);
-            if (updateSuccess) {
-            	SessionManager.getInstance().setCurrentUser(user);
-                return Response.success("Profile updated successfully.",null);
-            } else {
-                return Response.failure("Failed to update profile. Please try again later.");
-            }
-        } else {
-            return Response.failure("Invalid email or password.");
-        }
+           User.changeProfle(user, newPassword);
+        
+           SessionManager.getInstance().setCurrentUser(user);
+           return Response.success("Profile updated successfully.",null);
+            
+        } 
+        return  Response.failure("Failed to update profile.");
     }
     
     public String checkRegisterInput(String email, String name, String password, String role) {
@@ -98,34 +96,31 @@ public class UserController {
     }
     
     
-    public String checkChangeProfileInput(String email,String name, String oldPassword, String newPassword) {
-        if (email.isEmpty()) {
-            return "Email cannot be empty!";
-        }
+  
+        public String checkChangeProfileInput(String email, String name, String oldPassword, String newPassword) {
+            if (email.isEmpty()) {
+                return "Email cannot be empty!";
+            }
 
-        
-        if (name.isEmpty()) {
-            return "Name cannot be empty!";
+            if (name.isEmpty()) {
+                return "Name cannot be empty!";
+            }
+
+            if (oldPassword.isEmpty() || newPassword.isEmpty()) {
+                return "Passwords cannot be empty!";
+            }
+
+            if (newPassword.length() < 5) {
+                return "New password must be at least 5 characters!";
+            }
+
+
+  
+
+            return "valid";
         }
-        
-        if (oldPassword.isEmpty()) {
-            return "Password cannot be empty!";
-        }
-        
-        if (newPassword.isEmpty()) {
-            return "Password cannot be empty!";
-        }
-        
-        if (newPassword.length() < 5) {
-            return "Password must be at least 5 characters!";
-        }
-        
-        if(!newPassword.equals(oldPassword)) {
-        	return "Old password must equal";
-        }
-        
-        return "valid";
-    }
+    
+
     
     
 }

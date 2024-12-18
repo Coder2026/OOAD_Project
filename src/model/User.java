@@ -99,7 +99,7 @@ public class User {
 		 return UserRepository.getAllUser();
 	 }
 	 
-	 public static boolean changeProfle(User user, String newPassword) {
+	 public static String changeProfle(User user, String newPassword) {
 		 return UserRepository.updateUser(user, newPassword);
  	 }
 
