@@ -10,13 +10,9 @@ import util.Response;
 
 public class VendorController {
 
-	public Response<Vendor> manageVendor(String description, String product_name, String id){
-	    String checkInput = checkManageVendorInput(description, product_name);
-	    if (!checkInput.equals("valid")) {
-	        return Response.failure(checkInput);
-	    }
+	public Response<Vendor> getVendor(String id){
 		try {
-			Vendor message = Vendor.getProduct(id);
+			Vendor message = Vendor.manageVendor(id);
 			
 			return Response.success("Vendor data product retrived", message);
 		} catch (Exception e) {
@@ -24,8 +20,8 @@ public class VendorController {
 			return Response.failure("An error occurred during manage vendor. Please try again");
 		}
 	}
-	
-	
+//	
+//	
 	public String checkManageVendorInput(String description, String product_name) {
 		if(description.isEmpty()) {
 			return "Description cannot be empty";
@@ -85,4 +81,22 @@ public class VendorController {
             return Response.failure("An error occurred while retrieving accepted events: " + e.getMessage());
         }
     }
+    
+    public Response<Vendor> manageVendor(String description, String productName, String vendorId) {
+        String checkInput = checkManageVendorInput(description, productName);
+        if (!checkInput.equals("valid")) {
+            return Response.failure(checkInput);
+        }
+
+        boolean success = Vendor.manageVendor(vendorId, productName, description, "");
+        if (success) {
+            Vendor updatedVendor = new Vendor(vendorId,"" ,"","","","",productName, description);
+            return Response.success("Manage Vendor success", updatedVendor);
+        } else {
+            return Response.failure("Failed to manage vendor");
+        }
+    }
+
+
+
 }
