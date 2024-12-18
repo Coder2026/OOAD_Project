@@ -238,27 +238,57 @@ public class UserRepository {
         return participants;
     }
     
-    public static boolean updateUser(User user, String newPassword) {
+    public static String updateUser(User user, String newPassword) {
         DatabaseConnection db = DatabaseConnection.getInstance();
-        String query = "UPDATE User SET email = ?, name = ?, password = ? WHERE user_id = ?";
-        boolean updateSuccess = false;
-
+        
+       
+        String checkQuery = "SELECT email, name, password FROM User WHERE user_id != ?";
         try {
-            PreparedStatement ps = db.preparedStatement(query);
-            if (ps != null) {
-                ps.setString(1, user.getUser_email());
-                ps.setString(2, user.getUser_name());
-                ps.setString(3, newPassword);
-                ps.setString(4, user.getUser_id());
-
-                int rowsAffected = ps.executeUpdate();
-                updateSuccess = rowsAffected > 0;
+            PreparedStatement checkPs = db.preparedStatement(checkQuery);
+            checkPs.setString(1, user.getUser_id());
+            
+            try (ResultSet rs = checkPs.executeQuery()) {
+                while (rs.next()) {
+                    if (rs.getString("email").equals(user.getUser_email())) {
+                        return "Email is already registered!";
+                    }
+                    if (rs.getString("name").equals(user.getUser_name())) {
+                        return "Name is already registered!";
+                    }
+                    if (rs.getString("password").equals(user.getUser_password())) {
+                    	return "Password must be different!";
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return "Database error while checking duplicates!";
         }
 
-        return updateSuccess;
+  
+        String updateQuery = "UPDATE User SET email = ?, name = ?, password = ? WHERE user_id = ?";
+        
+        try {
+            PreparedStatement updatePs = db.preparedStatement(updateQuery);
+            updatePs.setString(1, user.getUser_email());
+            updatePs.setString(2, user.getUser_name());
+            updatePs.setString(3, newPassword);
+            updatePs.setString(4, user.getUser_id());
+
+            int rowsAffected = updatePs.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                return "Profile updated successfully!";
+            } else {
+                return "Failed to update profile!";
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Database error while updating profile!";
+        }
     }
+
+
 
 }

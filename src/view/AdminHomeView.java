@@ -17,6 +17,7 @@ public class AdminHomeView {
     private GridPane grid;
     private Button createEventBtn;
     private Button viewEventBtn;
+    private Button changeProfileBtn;
     private Stage primaryStage;
     private String id;
 
@@ -44,9 +45,14 @@ public class AdminHomeView {
         viewUserBtn.setOnAction(event->{
         	new AdminUserView().show(primaryStage);
         });
+        Button changePrflBtn = new Button("Change Profile");
+        changePrflBtn.setOnAction(event -> {
+            new ChangeProfileView().show(primaryStage);
+        });
+        
         grid.add(viewEventBtn, 0, 0);
         grid.add(viewUserBtn, 1, 0);
-     
+        grid.add(changePrflBtn, 2, 0);
         VBox vbox = new VBox(grid);
         vbox.setAlignment(Pos.CENTER);
 

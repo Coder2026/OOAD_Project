@@ -14,6 +14,7 @@ public class EOHomeView {
     private GridPane grid;
     private Button createEventBtn;
     private Button viewEventBtn;
+    private Button profileEventBtn;
     private Stage primaryStage;
     private String id;
 
@@ -32,15 +33,24 @@ public class EOHomeView {
         grid = createGridPane();
         createEventBtn = createCreateEventButton();
         viewEventBtn = createViewEventButton();
-
+        profileEventBtn = createChangeProfileButton();
         grid.add(viewEventBtn, 1, 0);
         grid.add(createEventBtn, 0, 0);
+        grid.add(profileEventBtn, 2, 0);
 
         root = new VBox(grid);
         root.setAlignment(Pos.CENTER);
     }
 
-    private Button createCreateEventButton() {
+    private Button createChangeProfileButton() {
+    	 Button createEventBtn = new Button("Change Profile");
+         createEventBtn.setOnAction(event -> {
+             new ChangeProfileView().show(primaryStage);
+         });
+         return createEventBtn;
+	}
+
+	private Button createCreateEventButton() {
         Button createEventBtn = new Button("Create Event");
         createEventBtn.setOnAction(event -> {
             new CreateEventView().show(primaryStage, id);
